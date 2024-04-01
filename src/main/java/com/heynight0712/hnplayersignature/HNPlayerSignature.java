@@ -34,7 +34,7 @@ public final class HNPlayerSignature extends JavaPlugin {
             sign.setExecutor(new SignCommand());
             sign.setTabCompleter(new SubCommand());
             command = command.replace("%command%", String.valueOf(sign.getAliases()));
-            getLogger().info(command);
+            getServer().getConsoleSender().sendMessage(command);
         }
     }
 }
