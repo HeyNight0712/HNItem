@@ -41,7 +41,6 @@ public class SignCommand implements CommandExecutor {
                 }
             }
 
-            player.sendMessage(LanguageManager.getString("commands.sign.success"));
             return true;
         }
         commandSender.sendMessage(LanguageManager.getString("commands.sign.error.not_player"));
@@ -64,9 +63,9 @@ public class SignCommand implements CommandExecutor {
     // remove
     private void remove(Player player, ItemMeta itemMeta) {
         if (player.isOp()) {
-            signItem.removeSign(player, itemMeta, true);
+            if (!signItem.removeSign(player, itemMeta, true)) return;
         } else {
-            if (!signItem.removeSign(player, itemMeta, false)) {return;}
+            if (!signItem.removeSign(player, itemMeta, false)) return;
         }
 
         player.sendMessage(LanguageManager.getString("commands.sign.success"));
