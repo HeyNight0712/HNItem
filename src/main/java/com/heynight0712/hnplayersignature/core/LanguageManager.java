@@ -37,9 +37,9 @@ public class LanguageManager {
     }
 
     public static String getString(String path) {
-        String message = languageConfig.getString(path);
+        String message = languageConfig.getString(path, "&7" + path);
 
-        return message != null ? ChatColor.translateAlternateColorCodes('&', message) : null;
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static String getString(String path, String def) {
