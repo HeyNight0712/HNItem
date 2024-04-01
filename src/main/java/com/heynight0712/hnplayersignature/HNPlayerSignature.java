@@ -6,6 +6,7 @@ public final class HNPlayerSignature extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        saveDefaultConfig();
         // Plugin startup logic
 
     }
