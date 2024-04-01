@@ -1,7 +1,9 @@
 package com.heynight0712.hnplayersignature.utils;
 
 import com.heynight0712.hnplayersignature.core.LanguageManager;
+import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -11,6 +13,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class SignItem {
     private ItemStack item;
@@ -54,22 +57,29 @@ public class SignItem {
         if (itemMeta == null) return false;
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        String UUID = container.get(uuidKey, PersistentDataType.STRING);
+        String uuidString = container.get(uuidKey, PersistentDataType.STRING);
 
         // 檢查 uuid相同 或者 管理員
-        if (!UUID.equals(player.getUniqueId().toString()) || !admin) {return false;}
+        if (uuidString == null) {
+            player.sendMessage(LanguageManager.getString("commands.sign.error.no_sign"));
+            return false;
+        }
+
+        if (!uuidString.equals(player.getUniqueId().toString()) || admin) {
+            String not_owner = LanguageManager.getString("commands.sign.error.not_owner");
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuidString));
+            not_owner = not_owner.replace("%playername%", offlinePlayer.getName());
+            player.sendMessage(not_owner);
+            return false;
+        }
 
         List<String> lore = itemMeta.getLore();
         lore.remove(lore.size() -1);
 
+        container.remove(uuidKey);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
         return true;
-    }
-    // 更新 item 修改
-
-    public void setItem(ItemStack item) {
-        this.item = item;
     }
 
     public ItemStack getItem() {
