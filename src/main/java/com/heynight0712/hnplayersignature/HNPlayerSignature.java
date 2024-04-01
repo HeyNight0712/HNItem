@@ -2,6 +2,7 @@ package com.heynight0712.hnplayersignature;
 
 import com.heynight0712.hnplayersignature.commands.SignCommand;
 import com.heynight0712.hnplayersignature.core.LanguageManager;
+import com.heynight0712.hnplayersignature.utils.SignItem;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -11,6 +12,9 @@ public final class HNPlayerSignature extends JavaPlugin {
     public void onEnable() {
         saveDefaultConfig();
         LanguageManager.saveDefaultConfig(this);
+
+        // 賦予 JavaPlugin
+        SignItem.initPlugin(this);
 
         registerCommands();
         // Plugin startup logic
