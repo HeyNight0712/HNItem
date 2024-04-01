@@ -65,7 +65,7 @@ public class SignItem {
             return false;
         }
 
-        if (!uuidString.equals(player.getUniqueId().toString()) || admin) {
+        if (!admin || !uuidString.equals(player.getUniqueId().toString())) {
             String not_owner = LanguageManager.getString("commands.sign.error.not_owner");
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuidString));
             not_owner = not_owner.replace("%playername%", offlinePlayer.getName());
