@@ -9,8 +9,8 @@ commands:
     no_player: "&c這個指令只能由玩家執行"
     error:
       no_item: "&c你手上沒有物品"
-      there_lore: "&c上面有 Lore 無法簽證"
+      has_lore: "&c上面有 Lore 無法簽證"
       has_sign: "&c這已經被簽證過  &7簽證玩家: %player%"
 
 item:
-  lore: "&a[個人簽章]: %playername%"
+  lore: "&a[個人簽證]: &7%playername%"
