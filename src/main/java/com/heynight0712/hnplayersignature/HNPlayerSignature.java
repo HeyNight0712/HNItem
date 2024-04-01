@@ -12,6 +12,7 @@ public final class HNPlayerSignature extends JavaPlugin {
         saveDefaultConfig();
         LanguageManager.saveDefaultConfig(this);
 
+        registerCommands();
         // Plugin startup logic
 
     }

@@ -1,5 +1,6 @@
 package com.heynight0712.hnplayersignature.core;
 
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -33,5 +34,17 @@ public class LanguageManager {
 
     public static void reloadConfig(JavaPlugin plugin) {
         languageConfig = YamlConfiguration.loadConfiguration(languageFile);
+    }
+
+    public static String getString(String path) {
+        String message = languageConfig.getString(path);
+
+        return message != null ? ChatColor.translateAlternateColorCodes('&', message) : null;
+    }
+
+    public static String getString(String path, String def) {
+        String message = languageConfig.getString(path, def);
+
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

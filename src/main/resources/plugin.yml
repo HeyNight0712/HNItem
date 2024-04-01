@@ -5,7 +5,7 @@ api-version: '1.20'
 
 ####################################################
 commands:
-  sign:
+  hnplayersignature:
     aliases: [sign]
     description: "簽名物品系統"
     usage: /hnplayersignature [subcommand]
