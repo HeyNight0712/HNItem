@@ -4,7 +4,10 @@ system:
 
 commands:
   sign:
-    success: "&a成功添加簽章"
+    success:
+      add: "&a成功添加簽章"
+      remove: "&a成功移除簽章"
+
     error:
       no_item: "&c你手上沒有物品"
       no_sign: "&c這物品沒有簽證"

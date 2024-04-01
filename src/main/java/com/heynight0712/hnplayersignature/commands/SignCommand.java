@@ -57,7 +57,7 @@ public class SignCommand implements CommandExecutor {
 
         signItem.addSign(player, itemMeta);
         player.getInventory().setItemInMainHand(signItem.getItem());
-        player.sendMessage(LanguageManager.getString("commands.sign.success"));
+        player.sendMessage(LanguageManager.getString("commands.sign.success.add"));
     }
 
     // remove
@@ -68,6 +68,6 @@ public class SignCommand implements CommandExecutor {
             if (!signItem.removeSign(player, itemMeta, false)) return;
         }
 
-        player.sendMessage(LanguageManager.getString("commands.sign.success"));
+        player.sendMessage(LanguageManager.getString("commands.sign.success.remove"));
     }
 }
