@@ -1,7 +1,12 @@
+system:
+  register:
+    commands: "註冊指令"
+
 command:
   sign:
     success: "&c成功!"
     fail: "&c失敗"
     error: "&c錯誤"
+
 item:
   lore: "&a[個人簽章]: %playername%"
