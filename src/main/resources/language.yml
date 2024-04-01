@@ -4,13 +4,14 @@ system:
 
 commands:
   sign:
-    success: "&a成功!"
-    fail: "&c失敗"
-    no_player: "&c這個指令只能由玩家執行"
+    success: "&a成功添加簽章"
     error:
       no_item: "&c你手上沒有物品"
-      has_lore: "&c上面有 Lore 無法簽證"
-      has_sign: "&c這已經被簽證過  &7簽證玩家: %player%"
+      no_sign: "&c這物品沒有簽證"
+      not_player: "&c這個指令只能由玩家執行"
+      not_owner: "&c你不是擁有者 &7簽證玩家: %playername%"
+      has_lore: "&c上面有其他屬性 Lore 無法簽證"
+      has_sign: "&c這已經被簽證過  &7簽證玩家: %playername%"
 
 item:
-  lore: "&a[個人簽證]: &7%playername%"
+  lore: "&6[個人個人簽章] &a玩家 %playername% 的物品"
