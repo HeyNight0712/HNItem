@@ -27,12 +27,14 @@ public final class HNPlayerSignature extends JavaPlugin {
     }
 
     private void registerCommands() {
-        getLogger().info(LanguageManager.getConfig().getString("system.register.commands", "system.register.commands"));
+        String command = LanguageManager.getString("system.command");
 
         PluginCommand sign = this.getCommand("hnplayersignature");
         if (sign != null) {
             sign.setExecutor(new SignCommand());
             sign.setTabCompleter(new SubCommand());
+            command = command.replace("%command%", String.valueOf(sign.getAliases()));
+            getLogger().info(command);
         }
     }
 }

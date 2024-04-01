@@ -1,6 +1,5 @@
 system:
-  register:
-    commands: "註冊指令"
+  command: "&a註冊 &f%command% &a指令"
 
 commands:
   sign:
