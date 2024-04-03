@@ -60,9 +60,10 @@ public class SignItem {
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         String uuidString = container.get(uuidKey, PersistentDataType.STRING);
 
+        // 防止 拋出錯誤 (無簽名)
         if (uuidString == null) {
             player.sendMessage(LanguageManager.getString("commands.sign.error.no_sign"));
-            return false;
+            return true;
         }
 
         // 檢查 管理員 && UUID不同
@@ -71,7 +72,7 @@ public class SignItem {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuidString));
             not_owner = not_owner.replace("%playername%", offlinePlayer.getName());
             player.sendMessage(not_owner);
-            return false;
+            return true;
         }
 
         List<String> lore = itemMeta.getLore();
