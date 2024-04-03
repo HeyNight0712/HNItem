@@ -46,6 +46,7 @@ public class SignItem {
         // 寫入 item
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
+        player.sendMessage(LanguageManager.getString("commands.sign.success.add"));
         return true;
     }
 
@@ -59,13 +60,13 @@ public class SignItem {
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         String uuidString = container.get(uuidKey, PersistentDataType.STRING);
 
-        // 檢查 uuid相同 或者 管理員
         if (uuidString == null) {
             player.sendMessage(LanguageManager.getString("commands.sign.error.no_sign"));
             return false;
         }
 
-        if (!admin || !uuidString.equals(player.getUniqueId().toString())) {
+        // 檢查 管理員 && UUID不同
+        if (!admin && !uuidString.equals(player.getUniqueId().toString())) {
             String not_owner = LanguageManager.getString("commands.sign.error.not_owner");
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(UUID.fromString(uuidString));
             not_owner = not_owner.replace("%playername%", offlinePlayer.getName());
@@ -79,6 +80,7 @@ public class SignItem {
         container.remove(uuidKey);
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
+        player.sendMessage(LanguageManager.getString("commands.sign.success.remove"));
         return true;
     }
 

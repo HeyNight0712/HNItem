@@ -12,10 +12,9 @@ public class SubCommand implements TabCompleter {
     public List<String> onTabComplete(CommandSender commandSender, Command command, String s, String[] strings) {
         List<String> list = new ArrayList<>();
 
-        if (strings.length == 1) {
-            list.add("add");
-            list.add("remove");
-        }
+        // if (strings.length == 1) {
+        //     list.add("add");
+        // }
 
         return list;
     }

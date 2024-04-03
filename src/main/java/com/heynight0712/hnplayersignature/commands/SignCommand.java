@@ -18,56 +18,48 @@ public class SignCommand implements CommandExecutor {
         if (commandSender instanceof Player) {
             Player player = (Player) commandSender;
 
+            // 獲取 手上物品
+            signItem = new SignItem(player.getInventory().getItemInMainHand());
+            ItemMeta itemMeta = signItem.getItem().getItemMeta();
+
+            // 檢查 是否為空
+            if (itemMeta == null) {
+                player.sendMessage(LanguageManager.getString("commands.sign.error.no_item"));
+                return true;
+            }
+
+            // 其他指令判定
             if (strings.length > 0) {
-
-                // 獲取 手上物品
-                signItem = new SignItem(player.getInventory().getItemInMainHand());
-                ItemMeta itemMeta = signItem.getItem().getItemMeta();
-
-                // 檢查 是否為空
-                if (itemMeta == null) {
-                    player.sendMessage(LanguageManager.getString("commands.sign.error.no_item"));
-                    return true;
-                }
-
-                if (strings[0].equalsIgnoreCase("add")) {
-                    add(player, itemMeta);
-                    return true;
-                }
-
-                if (strings[0].equalsIgnoreCase("remove")) {
-                    remove(player, itemMeta);
+                if (strings[0].equalsIgnoreCase("reload")) {
                     return true;
                 }
             }
 
+            // 添加/移除 簽名
+            sign(player, itemMeta);
             return true;
         }
         commandSender.sendMessage(LanguageManager.getString("commands.sign.error.not_player"));
         return true;
     }
 
-    // add
-    private void add(Player player, ItemMeta itemMeta) {
+    private void sign(Player player, ItemMeta itemMeta) {
         // 檢查是否有 Lore
         if (itemMeta.hasLore()) {
+
+            // 移除 Lore
+            if (player.isOp()) {
+                if (signItem.removeSign(player, itemMeta, true)) return;
+            } else {
+                if (signItem.removeSign(player, itemMeta, false)) return;
+            }
+
             player.sendMessage(LanguageManager.getString("commands.sign.error.has_lore"));
             return;
         }
 
+        // 簽名
         signItem.addSign(player, itemMeta);
         player.getInventory().setItemInMainHand(signItem.getItem());
-        player.sendMessage(LanguageManager.getString("commands.sign.success.add"));
-    }
-
-    // remove
-    private void remove(Player player, ItemMeta itemMeta) {
-        if (player.isOp()) {
-            if (!signItem.removeSign(player, itemMeta, true)) return;
-        } else {
-            if (!signItem.removeSign(player, itemMeta, false)) return;
-        }
-
-        player.sendMessage(LanguageManager.getString("commands.sign.success.remove"));
     }
 }
