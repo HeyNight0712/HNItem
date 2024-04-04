@@ -110,6 +110,8 @@ public class SignItem {
         return container.get(uuidKey, PersistentDataType.STRING);
     }
 
+    public NamespacedKey getUuidKey() {return uuidKey;}
+
     // 初始化
     public static void initPlugin(JavaPlugin javaPlugin) {
         plugin = javaPlugin;
