@@ -3,6 +3,7 @@ package com.heynight0712.hnplayersignature;
 import com.heynight0712.hnplayersignature.commands.SignCommand;
 import com.heynight0712.hnplayersignature.commands.SubCommand;
 import com.heynight0712.hnplayersignature.core.LanguageManager;
+import com.heynight0712.hnplayersignature.listeners.Map;
 import com.heynight0712.hnplayersignature.utils.SignItem;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -15,6 +16,8 @@ public final class HNPlayerSignature extends JavaPlugin {
 
         // 賦予 JavaPlugin
         SignItem.initPlugin(this);
+
+        getServer().getPluginManager().registerEvents(new Map(), this);
 
         registerCommands();
         // Plugin startup logic

@@ -89,6 +89,27 @@ public class SignItem {
         return item;
     }
 
+    public boolean hasSing() {
+        ItemMeta itemMeta = item.getItemMeta();
+
+        if (itemMeta == null) return false;
+
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        String uuidString = container.get(uuidKey, PersistentDataType.STRING);
+
+        return uuidString != null;
+
+    }
+
+    public String getSingUUID() {
+        ItemMeta itemMeta = item.getItemMeta();
+
+        if (itemMeta == null) return null;
+
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
+        return container.get(uuidKey, PersistentDataType.STRING);
+    }
+
     // 初始化
     public static void initPlugin(JavaPlugin javaPlugin) {
         plugin = javaPlugin;

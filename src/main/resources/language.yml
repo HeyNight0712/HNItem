@@ -1,4 +1,5 @@
 system:
+  title: "&8[&c系統&8] "
   command: "&a註冊 &f%command% &a指令"
 
 commands:
@@ -17,3 +18,5 @@ commands:
 
 item:
   lore: "&6[個人個人簽章] &a玩家 %playername% 的物品"
+  not_owner: "&f僅有 簽證 ID 才可修改及更動設定"
+
