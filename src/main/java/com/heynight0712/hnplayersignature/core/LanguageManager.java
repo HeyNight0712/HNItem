@@ -38,14 +38,12 @@ public class LanguageManager {
 
     public static String getString(String path) {
         String message = languageConfig.getString(path, "&7" + path);
-        message = languageConfig.getString("system.title", "&8[&4系統&8] ") + message;
 
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     public static String getString(String path, String def) {
         String message = languageConfig.getString(path, def);
-        message = languageConfig.getString("system.title", "&8[&4系統&8] ") + message;
 
         return ChatColor.translateAlternateColorCodes('&', message);
     }

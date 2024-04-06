@@ -31,11 +31,11 @@ public class BlockPlace implements Listener {
                 if (block.getState() instanceof Banner) {
                     Banner banner = (Banner) block.getState();
                     PersistentDataContainer container = banner.getPersistentDataContainer();
-                    container.set(signItem.getUuidKey(), PersistentDataType.STRING, signItem.getSingUUID());
+                    container.set(SignItem.getUuidKey(), PersistentDataType.STRING, signItem.getSingUUID());
                     banner.update();
+                    return true;
                 }
             }
-            return true;
         }
         return false;
     }

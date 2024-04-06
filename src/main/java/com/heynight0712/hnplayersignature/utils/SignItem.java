@@ -25,12 +25,12 @@ public class SignItem {
     }
 
     // 添加簽名
-    public boolean addSign(Player player, ItemMeta itemMeta) {
+    public boolean addSign(String uuid, ItemMeta itemMeta) {
         if (itemMeta == null) return false;
 
         // 獲取 元數據
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        container.set(uuidKey, PersistentDataType.STRING, player.getUniqueId().toString());
+        container.set(uuidKey, PersistentDataType.STRING, uuid);
 
         // 獲取已有 lore
         List<String> lore = new ArrayList<>();
@@ -39,14 +39,16 @@ public class SignItem {
         }
 
         // 設置 lore
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        String playerName = player != null ? player.getName() : Bukkit.getOfflinePlayer(UUID.fromString(uuid)).getName();
+
         String loreName = LanguageManager.getString("item.lore");
-        loreName = loreName.replace("%playername%", player.getName());
+        loreName = loreName.replace("%playername%", playerName != null ? playerName : "未知玩家");
         lore.add(loreName);
 
         // 寫入 item
         itemMeta.setLore(lore);
         item.setItemMeta(itemMeta);
-        player.sendMessage(LanguageManager.getString("commands.sign.success.add"));
         return true;
     }
 
@@ -110,7 +112,8 @@ public class SignItem {
         return container.get(uuidKey, PersistentDataType.STRING);
     }
 
-    public NamespacedKey getUuidKey() {return uuidKey;}
+
+    public static NamespacedKey getUuidKey() {return uuidKey;}
 
     // 初始化
     public static void initPlugin(JavaPlugin javaPlugin) {
