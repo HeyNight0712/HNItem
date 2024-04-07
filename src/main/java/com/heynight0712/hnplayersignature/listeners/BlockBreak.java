@@ -1,12 +1,14 @@
 package com.heynight0712.hnplayersignature.listeners;
 
 import com.heynight0712.hnplayersignature.utils.SignItem;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -27,9 +29,15 @@ public class BlockBreak implements Listener {
                 String playerUUID = container.get(SignItem.getUuidKey(), PersistentDataType.STRING);
 
                 // 重新賦予 掉落物
-                SignItem signItem = new SignItem(new ItemStack(block.getType()));
-                ItemMeta itemMeta = signItem.getItem().getItemMeta();
-                signItem.addSign(playerUUID, itemMeta);
+                ItemStack item = new ItemStack(block.getType());
+                BannerMeta meta = (BannerMeta) item.getItemMeta();
+                meta.setPatterns(banner.getPatterns());
+
+                meta.setDisplayName("測試");
+                SignItem signItem = new SignItem(item);
+
+                signItem.addSign(playerUUID, meta);
+
                 event.getBlock().getWorld().dropItemNaturally(block.getLocation(), signItem.getItem());
                 event.setDropItems(false);
                 return true;
