@@ -2,6 +2,7 @@ package com.heynight0712.hnplayersignature.utils.data;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -28,10 +29,11 @@ public class ItemData {
      * 移除 UUIDKey
      * @return 成功移除 返回 True
      */
-    public boolean removeUUIDKey() {
-        if (item.getItemMeta() == null) return false;
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public boolean removeUUIDKey(ItemMeta itemMeta) {
+        if (itemMeta == null) return false;
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         container.remove(UUIDKey);
+        item.setItemMeta(itemMeta);
         return true;
     }
 
@@ -39,10 +41,11 @@ public class ItemData {
      * 移除 DisplayNameKey
      * @return 成功移除 返回 True
      */
-    public boolean removeDisplayNameKey() {
-        if (item.getItemMeta() == null) return false;
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public boolean removeDisplayNameKey(ItemMeta itemMeta) {
+        if (itemMeta == null) return false;
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         container.remove(displayNameKey);
+        item.setItemMeta(itemMeta);
         return true;
     }
 
@@ -52,10 +55,11 @@ public class ItemData {
      * @param UUIDString Player UUID
      * @return 成功添加 返回 True
      */
-    public boolean setUUID(String UUIDString) {
-        if (item.getItemMeta() == null) return false;
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+    public boolean setUUID(String UUIDString, ItemMeta itemMeta) {
+        if (itemMeta == null) return false;
+        PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         container.set(UUIDKey, PersistentDataType.STRING, UUIDString);
+        item.setItemMeta(itemMeta);
         return true;
     }
 
@@ -67,8 +71,10 @@ public class ItemData {
      */
     public boolean setDisplayName(String DisplayNameString) {
         if (item.getItemMeta() == null) return false;
-        PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
+        ItemMeta meta = item.getItemMeta();
+        PersistentDataContainer container = meta.getPersistentDataContainer();
         container.set(displayNameKey, PersistentDataType.STRING, DisplayNameString);
+        item.setItemMeta(meta);
         return true;
     }
 

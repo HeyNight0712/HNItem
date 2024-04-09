@@ -1,7 +1,7 @@
 package com.heynight0712.hnplayersignature.listeners;
 
-import com.heynight0712.hnplayersignature.utils.SignItem;
-import org.bukkit.NamespacedKey;
+import com.heynight0712.hnplayersignature.utils.data.ItemData;
+import com.heynight0712.hnplayersignature.utils.data.ItemHandler;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -22,27 +22,41 @@ public class BlockBreak implements Listener {
     }
 
     private boolean onBanner(Block block, BlockBreakEvent event) {
-        if (block.getState() instanceof Banner) {
-            Banner banner = (Banner) block.getState();
-            PersistentDataContainer container = banner.getPersistentDataContainer();
-            if (container.has(SignItem.getUuidKey(), PersistentDataType.STRING)) {
-                String playerUUID = container.get(SignItem.getUuidKey(), PersistentDataType.STRING);
+        if (!(block.getState() instanceof Banner)) return false;
+        Banner banner = (Banner) block.getState();
+        PersistentDataContainer container = banner.getPersistentDataContainer();
 
-                // 重新賦予 掉落物
-                ItemStack item = new ItemStack(block.getType());
-                BannerMeta meta = (BannerMeta) item.getItemMeta();
-                meta.setPatterns(banner.getPatterns());
+        // 檢查是否簽名
+        if (!(container.has(ItemData.getUUIDKey(), PersistentDataType.STRING))) return false;
 
-                meta.setDisplayName("測試");
-                SignItem signItem = new SignItem(item);
+        // 重新製作物品
+        ItemHandler itemHandler = new ItemHandler(new ItemStack(block.getType()));
+        ItemMeta itemMeta = itemHandler.getItemData().getItem().getItemMeta();
+        BannerMeta bannerMeta = (BannerMeta) itemMeta;
+        bannerMeta.setPatterns(banner.getPatterns());
 
-                signItem.addSign(playerUUID, meta);
-
-                event.getBlock().getWorld().dropItemNaturally(block.getLocation(), signItem.getItem());
-                event.setDropItems(false);
-                return true;
-            }
-        }
-        return false;
+        return true;
+//        if (block.getState() instanceof Banner) {
+//            Banner banner = (Banner) block.getState();
+//            PersistentDataContainer container = banner.getPersistentDataContainer();
+//            if (container.has(SignItem.getUuidKey(), PersistentDataType.STRING)) {
+//                String playerUUID = container.get(SignItem.getUuidKey(), PersistentDataType.STRING);
+//
+//                // 重新賦予 掉落物
+//                ItemStack item = new ItemStack(block.getType());
+//                BannerMeta meta = (BannerMeta) item.getItemMeta();
+//                meta.setPatterns(banner.getPatterns());
+//
+//                meta.setDisplayName("測試");
+//                SignItem signItem = new SignItem(item);
+//
+//                signItem.addSign(playerUUID, meta);
+//
+//                event.getBlock().getWorld().dropItemNaturally(block.getLocation(), signItem.getItem());
+//                event.setDropItems(false);
+//                return true;
+//            }
+//        }
+//        return false;
     }
 }

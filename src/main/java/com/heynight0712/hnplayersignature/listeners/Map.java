@@ -1,7 +1,7 @@
 package com.heynight0712.hnplayersignature.listeners;
 
 import com.heynight0712.hnplayersignature.core.LanguageManager;
-import com.heynight0712.hnplayersignature.utils.SignItem;
+import com.heynight0712.hnplayersignature.utils.data.ItemHandler;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,17 +15,17 @@ public class Map implements Listener {
 
         // 檢查 製圖台
         if (event.getClickedInventory() instanceof CartographyInventory) {
-            SignItem signItem = new SignItem(event.getInventory().getItem(0));
+            ItemHandler itemHandler = new ItemHandler(event.getInventory().getItem(0));
 
-            if (signItem.getItem() == null) return;
+            if (itemHandler.getItemData().getItem() == null) return;
 
             // 檢查 是否簽名
-            if (signItem.hasSing() && event.getSlot() == 2) {
+            if (itemHandler.getItemData().hasUUID() && event.getSlot() == 2) {
                 Player player = (Player) event.getWhoClicked();
                 String playerUUID = String.valueOf(player.getUniqueId());
 
                 // 檢查 UUID 是否相同
-                if (signItem.getSingUUID().equals(playerUUID)) return;
+                if (itemHandler.getItemData().getUUIDString().equals(playerUUID)) return;
 
                 event.setCancelled(true);
                 event.getWhoClicked().sendMessage(LanguageManager.getString("item.not_owner"));

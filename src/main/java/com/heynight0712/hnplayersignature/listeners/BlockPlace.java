@@ -1,42 +1,28 @@
 package com.heynight0712.hnplayersignature.listeners;
 
-import com.heynight0712.hnplayersignature.utils.SignItem;
+import com.heynight0712.hnplayersignature.utils.data.ItemData;
+import com.heynight0712.hnplayersignature.utils.data.ItemHandler;
 import org.bukkit.block.Banner;
-import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
 public class BlockPlace implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        SignItem signItem = new SignItem(event.getItemInHand());
-        Block block = event.getBlockPlaced();
+        ItemHandler itemHandler = new ItemHandler(event.getItemInHand());
+        if (itemHandler.getItemData().hasUUID()) {
+            if (!itemHandler.getItemData().getItem().getType().name().endsWith("_BANNER")) return;
 
-        if (onBanner(signItem, block)) return;
+            Banner banner = (Banner) event.getBlockPlaced().getState();
+            PersistentDataContainer container = banner.getPersistentDataContainer();
+            container.set(ItemData.getUUIDKey(), PersistentDataType.STRING, itemHandler.getItemData().getUUIDString());
+            banner.update(true);
+            event.getPlayer().sendMessage("放置簽名 成功!");
 
-
-    }
-
-    private boolean onBanner(SignItem signItem, Block block) {
-        // 檢查 手上物品 是否旗幟
-        if (signItem.getItem().getItemMeta() instanceof BannerMeta) {
-            // 檢查 是否 簽名旗幟
-            if (signItem.hasSing()) {
-
-                // 檢查 方塊狀態 是否旗幟
-                if (block.getState() instanceof Banner) {
-                    Banner banner = (Banner) block.getState();
-                    PersistentDataContainer container = banner.getPersistentDataContainer();
-                    container.set(SignItem.getUuidKey(), PersistentDataType.STRING, signItem.getSingUUID());
-                    banner.update();
-                    return true;
-                }
-            }
         }
-        return false;
     }
 }
+
