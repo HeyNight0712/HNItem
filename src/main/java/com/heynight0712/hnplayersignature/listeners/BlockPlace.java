@@ -12,17 +12,32 @@ import org.bukkit.persistence.PersistentDataType;
 public class BlockPlace implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        ItemHandler itemHandler = new ItemHandler(event.getItemInHand());
-        if (itemHandler.getItemData().hasUUID()) {
-            if (!itemHandler.getItemData().getItem().getType().name().endsWith("_BANNER")) return;
+        ItemData item = new ItemData(event.getItemInHand());
 
-            Banner banner = (Banner) event.getBlockPlaced().getState();
-            PersistentDataContainer container = banner.getPersistentDataContainer();
-            container.set(ItemData.getUUIDKey(), PersistentDataType.STRING, itemHandler.getItemData().getUUIDString());
-            banner.update(true);
-            event.getPlayer().sendMessage("放置簽名 成功!");
+        if (placeBanner(item, event)) return;
 
+        event.getPlayer().sendMessage("其他放置");
+    }
+
+    private boolean placeBanner(ItemData item, BlockPlaceEvent event) {
+        if (!item.getItem().getType().name().endsWith("_BANNER")) return false;
+        Banner banner = (Banner) event.getBlockPlaced().getState();
+
+        PersistentDataContainer container = banner.getPersistentDataContainer();
+
+        // 保存 簽證ID
+        if (item.hasUUID()) {
+            container.set(ItemData.getUUIDKey(), PersistentDataType.STRING, item.getUUIDString());
         }
+
+        // 保存 命名物品
+        if (item.getItem().getItemMeta().hasDisplayName()) {
+            container.set(ItemData.getDisplayNameKey(), PersistentDataType.STRING, item.getItem().getItemMeta().getDisplayName());
+        }
+
+        // 更新旗幟
+        banner.update(true);
+        return true;
     }
 }
 

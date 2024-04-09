@@ -3,6 +3,7 @@ package com.heynight0712.hnplayersignature;
 import com.heynight0712.hnplayersignature.commands.SignCommand;
 import com.heynight0712.hnplayersignature.commands.SubCommand;
 import com.heynight0712.hnplayersignature.core.LanguageManager;
+import com.heynight0712.hnplayersignature.listeners.BlockBreak;
 import com.heynight0712.hnplayersignature.listeners.BlockPlace;
 import com.heynight0712.hnplayersignature.listeners.Map;
 import com.heynight0712.hnplayersignature.utils.data.ItemData;
@@ -21,7 +22,7 @@ public final class HNPlayerSignature extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new Map(), this);
 
         getServer().getPluginManager().registerEvents(new BlockPlace(), this);
-        // getServer().getPluginManager().registerEvents(new BlockBreak(), this);
+        getServer().getPluginManager().registerEvents(new BlockBreak(), this);
 
         registerCommands();
         // Plugin startup logic

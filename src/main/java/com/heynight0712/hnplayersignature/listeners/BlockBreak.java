@@ -31,9 +31,21 @@ public class BlockBreak implements Listener {
 
         // 重新製作物品
         ItemHandler itemHandler = new ItemHandler(new ItemStack(block.getType()));
-        ItemMeta itemMeta = itemHandler.getItemData().getItem().getItemMeta();
-        BannerMeta bannerMeta = (BannerMeta) itemMeta;
+        BannerMeta bannerMeta = (BannerMeta) itemHandler.getItemData().getItem().getItemMeta();
         bannerMeta.setPatterns(banner.getPatterns());
+
+        String playerUUID = container.get(ItemData.getUUIDKey(), PersistentDataType.STRING);
+        itemHandler.setSign(playerUUID, bannerMeta);
+
+        if (container.has(ItemData.getDisplayNameKey(), PersistentDataType.STRING)) {
+            String displayName = container.get(ItemData.getDisplayNameKey(), PersistentDataType.STRING);
+            bannerMeta.setDisplayName(displayName);
+            itemHandler.getItemData().getItem().setItemMeta(bannerMeta);
+        }
+
+
+        event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemHandler.getItemData().getItem());
+        event.setDropItems(false);
 
         return true;
 //        if (block.getState() instanceof Banner) {
