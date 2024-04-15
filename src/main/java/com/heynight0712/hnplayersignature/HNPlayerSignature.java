@@ -6,18 +6,17 @@ import com.heynight0712.hnplayersignature.core.LanguageManager;
 import com.heynight0712.hnplayersignature.listeners.BlockBreak;
 import com.heynight0712.hnplayersignature.listeners.BlockPlace;
 import com.heynight0712.hnplayersignature.listeners.Map;
-import com.heynight0712.hnplayersignature.utils.data.ItemData;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class HNPlayerSignature extends JavaPlugin {
+    private static HNPlayerSignature instance;
 
     @Override
     public void onEnable() {
+        instance = this;
         LanguageManager.saveDefaultConfig(this);
 
-        // 賦予 JavaPlugin
-        ItemData.initPlugin(this);
 
         getServer().getPluginManager().registerEvents(new Map(), this);
 
@@ -31,6 +30,7 @@ public final class HNPlayerSignature extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        instance = null;
         // Plugin shutdown logic
     }
 
@@ -45,4 +45,6 @@ public final class HNPlayerSignature extends JavaPlugin {
             getServer().getConsoleSender().sendMessage(command);
         }
     }
+
+    public static HNPlayerSignature getInstance() {return instance;}
 }

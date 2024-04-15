@@ -2,6 +2,9 @@ name: HNPlayerSignature
 version: '${version}'
 main: com.heynight0712.hnplayersignature.HNPlayerSignature
 api-version: '1.20'
+softdepend: [Vault]
+loadbefore:
+  - Vault
 
 ####################################################
 commands:

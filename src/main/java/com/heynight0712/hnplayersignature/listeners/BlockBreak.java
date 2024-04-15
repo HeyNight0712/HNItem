@@ -1,74 +1,68 @@
 package com.heynight0712.hnplayersignature.listeners;
 
+import com.heynight0712.hnplayersignature.core.LanguageManager;
+import com.heynight0712.hnplayersignature.data.Key;
 import com.heynight0712.hnplayersignature.utils.data.ItemData;
-import com.heynight0712.hnplayersignature.utils.data.ItemHandler;
+import com.heynight0712.hnplayersignature.utils.data.ItemHandle;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+
+import java.util.UUID;
 
 public class BlockBreak implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
 
-        if (onBanner(block, event)) return;
+        onBanner(block, event);
     }
 
     private boolean onBanner(Block block, BlockBreakEvent event) {
         if (!(block.getState() instanceof Banner)) return false;
         Banner banner = (Banner) block.getState();
-        PersistentDataContainer container = banner.getPersistentDataContainer();
+        PersistentDataContainer bannerContainer = banner.getPersistentDataContainer();
 
         // 檢查是否簽名
-        if (!(container.has(ItemData.getUUIDKey(), PersistentDataType.STRING))) return false;
+        if (!(bannerContainer.has(Key.UUID, PersistentDataType.STRING))) return false;
 
         // 重新製作物品
-        ItemHandler itemHandler = new ItemHandler(new ItemStack(block.getType()));
-        BannerMeta bannerMeta = (BannerMeta) itemHandler.getItemData().getItem().getItemMeta();
+        ItemData itemData = new ItemData(new ItemStack(block.getType()));
+
+        BannerMeta bannerMeta = (BannerMeta) itemData.getItemStack().getItemMeta();
+        if (bannerMeta == null) return false;
         bannerMeta.setPatterns(banner.getPatterns());
 
-        String playerUUID = container.get(ItemData.getUUIDKey(), PersistentDataType.STRING);
-        itemHandler.setSign(playerUUID, bannerMeta);
+        // 添加回去 Key.UUID
+        String playerUUID = bannerContainer.get(Key.UUID, PersistentDataType.STRING);
+        ItemHandle.addSign(bannerMeta.getPersistentDataContainer(), playerUUID);
 
-        if (container.has(ItemData.getDisplayNameKey(), PersistentDataType.STRING)) {
-            String displayName = container.get(ItemData.getDisplayNameKey(), PersistentDataType.STRING);
+        // 返回名稱
+        if (bannerContainer.has(Key.DisplayName, PersistentDataType.STRING)) {
+            String displayName = bannerContainer.get(Key.DisplayName, PersistentDataType.STRING);
             bannerMeta.setDisplayName(displayName);
-            itemHandler.getItemData().getItem().setItemMeta(bannerMeta);
         }
 
+        // 重新上 Lore
+        Player player = Bukkit.getPlayer(UUID.fromString(playerUUID));
+        String playerName = player != null ? player.getDisplayName() : Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)).getName();
+        String lore = LanguageManager.getString("item.lore");
+        lore = lore.replace("%playername%", playerName != null ? playerName : "未知玩家");
+        ItemHandle.addLore(bannerMeta, lore);
 
-        event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemHandler.getItemData().getItem());
+
+        itemData.getItemStack().setItemMeta(bannerMeta);
+        event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemData.getItemStack());
         event.setDropItems(false);
 
         return true;
-//        if (block.getState() instanceof Banner) {
-//            Banner banner = (Banner) block.getState();
-//            PersistentDataContainer container = banner.getPersistentDataContainer();
-//            if (container.has(SignItem.getUuidKey(), PersistentDataType.STRING)) {
-//                String playerUUID = container.get(SignItem.getUuidKey(), PersistentDataType.STRING);
-//
-//                // 重新賦予 掉落物
-//                ItemStack item = new ItemStack(block.getType());
-//                BannerMeta meta = (BannerMeta) item.getItemMeta();
-//                meta.setPatterns(banner.getPatterns());
-//
-//                meta.setDisplayName("測試");
-//                SignItem signItem = new SignItem(item);
-//
-//                signItem.addSign(playerUUID, meta);
-//
-//                event.getBlock().getWorld().dropItemNaturally(block.getLocation(), signItem.getItem());
-//                event.setDropItems(false);
-//                return true;
-//            }
-//        }
-//        return false;
     }
 }

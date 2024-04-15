@@ -1,7 +1,7 @@
 package com.heynight0712.hnplayersignature.listeners;
 
+import com.heynight0712.hnplayersignature.data.Key;
 import com.heynight0712.hnplayersignature.utils.data.ItemData;
-import com.heynight0712.hnplayersignature.utils.data.ItemHandler;
 import org.bukkit.block.Banner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -12,27 +12,26 @@ import org.bukkit.persistence.PersistentDataType;
 public class BlockPlace implements Listener {
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        ItemData item = new ItemData(event.getItemInHand());
+        ItemData itemData = new ItemData(event.getItemInHand());
 
-        if (placeBanner(item, event)) return;
+        placeBanner(itemData, event);
 
-        event.getPlayer().sendMessage("其他放置");
     }
 
-    private boolean placeBanner(ItemData item, BlockPlaceEvent event) {
-        if (!item.getItem().getType().name().endsWith("_BANNER")) return false;
+    private boolean placeBanner(ItemData itemData, BlockPlaceEvent event) {
+        if (!itemData.getItemStack().getType().name().endsWith("_BANNER")) return false;
         Banner banner = (Banner) event.getBlockPlaced().getState();
 
-        PersistentDataContainer container = banner.getPersistentDataContainer();
-
+        PersistentDataContainer bannerContainer = banner.getPersistentDataContainer();
+        PersistentDataContainer itemContainer = itemData.getPersistentDataContainer();
         // 保存 簽證ID
-        if (item.hasUUID()) {
-            container.set(ItemData.getUUIDKey(), PersistentDataType.STRING, item.getUUIDString());
+        if (itemContainer.has(Key.UUID)) {
+            bannerContainer.set(Key.UUID, PersistentDataType.STRING, itemContainer.get(Key.UUID, PersistentDataType.STRING));
         }
 
         // 保存 命名物品
-        if (item.getItem().getItemMeta().hasDisplayName()) {
-            container.set(ItemData.getDisplayNameKey(), PersistentDataType.STRING, item.getItem().getItemMeta().getDisplayName());
+        if (itemData.getItemStack().getItemMeta().hasDisplayName()) {
+            bannerContainer.set(Key.DisplayName, PersistentDataType.STRING, itemData.getItemStack().getItemMeta().getDisplayName());
         }
 
         // 更新旗幟
