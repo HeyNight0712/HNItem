@@ -2,9 +2,9 @@ package com.heynight0712.hnplayersignature.commands;
 
 import com.heynight0712.hnplayersignature.core.LanguageManager;
 import com.heynight0712.hnplayersignature.data.Key;
+import com.heynight0712.hnplayersignature.utils.data.DataHandle;
 import com.heynight0712.hnplayersignature.utils.data.ItemData;
 import com.heynight0712.hnplayersignature.utils.data.ItemHandle;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -46,10 +46,8 @@ public class SignCommand implements CommandExecutor {
             if (ItemHandle.isOwner(container, player)) {
                 remove();
             } else {
-
                 String not_owner = LanguageManager.getString("commands.sign.error.not_owner");
-                Player ownerPlayer = Bukkit.getPlayer(UUID.fromString(container.get(Key.UUID, PersistentDataType.STRING)));
-                String ownerName = ownerPlayer != null ? ownerPlayer.getDisplayName() : Bukkit.getOfflinePlayer(UUID.fromString(container.get(Key.UUID, PersistentDataType.STRING))).getName();
+                String ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(Key.UUID, PersistentDataType.STRING)));
                 not_owner = not_owner.replace("%playername%", ownerName != null ? ownerName : "未知玩家");
                 player.sendMessage(not_owner);
             }
@@ -69,10 +67,9 @@ public class SignCommand implements CommandExecutor {
         }
 
         // add
-        String playerUUID = player.getName();
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        ItemHandle.addSign(container, player);
-        ItemHandle.addLore(itemMeta, "item.lore", playerUUID);
+        container.set(Key.UUID, PersistentDataType.STRING, player.getUniqueId().toString());
+        ItemHandle.addLore(itemMeta, "item.lore", "%playername%", player.getName());
         itemData.getItemStack().setItemMeta(itemMeta);
 
         player.sendMessage(LanguageManager.getString("commands.sign.success.add"));

@@ -12,40 +12,54 @@ import java.util.List;
 
 public class ItemHandle {
 
+    /**
+     * 檢查是否傭有者
+     * @param container 物品標籤
+     * @param player 玩家
+     * @return 是則返回 True
+     */
     public static boolean isOwner(PersistentDataContainer container, Player player) {
         String ownerUUID = container.get(Key.UUID, PersistentDataType.STRING);
         String playerUUID = player.getUniqueId().toString();
         return ownerUUID == null || ownerUUID.equals(playerUUID);
     }
 
-    public static void addSign(PersistentDataContainer container, Player player) {
-        String playerUUID = player.getUniqueId().toString();
-        container.set(Key.UUID, PersistentDataType.STRING, playerUUID);
-    }
-
-    public static void addSign(PersistentDataContainer container, String playerUUID) {
-        container.set(Key.UUID, PersistentDataType.STRING, playerUUID);
-    }
-
-    public static void addLore(ItemMeta itemMeta, String value) {
+    /**
+     * 添加 lore
+     * @param itemMeta 物品itemMeta
+     * @param message 添加訊息
+     */
+    public static void addLore(ItemMeta itemMeta, String message) {
         List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
-        lore.add(LanguageManager.getString(value));
+        lore.add(LanguageManager.getString(message));
         itemMeta.setLore(lore);
     }
 
-    public static void addLore(ItemMeta itemMeta, String path, String value) {
+    /**
+     * 添加 lore
+     * @param itemMeta 物品itemMeta
+     * @param path language,yml 路徑
+     * @param target 轉換 language 內容
+     * @param replacement 覆蓋 target 文本
+     */
+    public static void addLore(ItemMeta itemMeta, String path, String target, String replacement) {
         if (itemMeta == null) return;
 
         List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
         String loreName = LanguageManager.getString(path);
-        lore.add(loreName.replace("%playername%", value));
+        lore.add(loreName.replace(target, replacement));
 
         itemMeta.setLore(lore);
     }
 
-    public static boolean removeLore(ItemMeta itemMeta) {
-        if (itemMeta == null) return false;
+    /**
+     * 移除 所有lore
+     * @param itemMeta 物品itemMeta
+     */
+    public static void removeLore(ItemMeta itemMeta) {
+        if (itemMeta == null) return;
         itemMeta.setLore(null);
-        return true;
     }
+
+
 }

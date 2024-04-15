@@ -2,12 +2,11 @@ package com.heynight0712.hnplayersignature.listeners;
 
 import com.heynight0712.hnplayersignature.core.LanguageManager;
 import com.heynight0712.hnplayersignature.data.Key;
+import com.heynight0712.hnplayersignature.utils.data.DataHandle;
 import com.heynight0712.hnplayersignature.utils.data.ItemData;
 import com.heynight0712.hnplayersignature.utils.data.ItemHandle;
-import org.bukkit.Bukkit;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -39,30 +38,30 @@ public class BlockBreak implements Listener {
 
         BannerMeta bannerMeta = (BannerMeta) itemData.getItemStack().getItemMeta();
         if (bannerMeta == null) return false;
+
+        // 返回 旗幟樣式
         bannerMeta.setPatterns(banner.getPatterns());
 
-        // 添加回去 Key.UUID
+        // 返回 Key.UUID
         String playerUUID = bannerContainer.get(Key.UUID, PersistentDataType.STRING);
-        ItemHandle.addSign(bannerMeta.getPersistentDataContainer(), playerUUID);
+        bannerMeta.getPersistentDataContainer().set(Key.UUID, PersistentDataType.STRING, playerUUID);
 
-        // 返回名稱
+        // 返回 物品名稱
         if (bannerContainer.has(Key.DisplayName, PersistentDataType.STRING)) {
             String displayName = bannerContainer.get(Key.DisplayName, PersistentDataType.STRING);
             bannerMeta.setDisplayName(displayName);
         }
 
-        // 重新上 Lore
-        Player player = Bukkit.getPlayer(UUID.fromString(playerUUID));
-        String playerName = player != null ? player.getDisplayName() : Bukkit.getOfflinePlayer(UUID.fromString(playerUUID)).getName();
+        // 添加 Lore
+        String playerName = DataHandle.getPlayerName(UUID.fromString(playerUUID));
         String lore = LanguageManager.getString("item.lore");
         lore = lore.replace("%playername%", playerName != null ? playerName : "未知玩家");
         ItemHandle.addLore(bannerMeta, lore);
 
-
+        // 設置 item
         itemData.getItemStack().setItemMeta(bannerMeta);
         event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemData.getItemStack());
         event.setDropItems(false);
-
         return true;
     }
 }
