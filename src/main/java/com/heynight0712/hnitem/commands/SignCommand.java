@@ -1,10 +1,10 @@
-package com.heynight0712.hnplayersignature.commands;
+package com.heynight0712.hnitem.commands;
 
-import com.heynight0712.hnplayersignature.core.LanguageManager;
-import com.heynight0712.hnplayersignature.data.Key;
-import com.heynight0712.hnplayersignature.utils.data.DataHandle;
-import com.heynight0712.hnplayersignature.utils.data.ItemData;
-import com.heynight0712.hnplayersignature.utils.data.ItemHandle;
+import com.heynight0712.hnitem.core.LanguageManager;
+import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.utils.data.DataHandle;
+import com.heynight0712.hnitem.utils.data.ItemData;
+import com.heynight0712.hnitem.utils.data.ItemHandle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
+import java.util.List;
 import java.util.UUID;
 
 public class SignCommand implements CommandExecutor {
@@ -38,6 +39,10 @@ public class SignCommand implements CommandExecutor {
             // 檢查是否簽名
             PersistentDataContainer container = itemData.getPersistentDataContainer();
             if (!container.has(Key.UUID)) {
+
+                // 暫時使用的方式 舊版本
+                if (DataHandle.old(itemMeta, player, itemData)) {return true;}
+
                 add();
                 return true;
             }
@@ -58,13 +63,11 @@ public class SignCommand implements CommandExecutor {
         return true;
     }
 
+    /**
+     * 添加簽名
+     */
     private void add() {
         ItemMeta itemMeta = itemData.getItemStack().getItemMeta();
-        // hasLore
-        if (itemMeta == null || itemMeta.hasLore()) {
-            player.sendMessage(LanguageManager.getString("commands.sign.error.has_lore"));
-            return;
-        }
 
         // add
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();

@@ -1,8 +1,9 @@
-package com.heynight0712.hnplayersignature.listeners;
+package com.heynight0712.hnitem.listeners;
 
-import com.heynight0712.hnplayersignature.core.LanguageManager;
-import com.heynight0712.hnplayersignature.data.Key;
-import com.heynight0712.hnplayersignature.utils.data.ItemData;
+import com.heynight0712.hnitem.core.LanguageManager;
+import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.utils.data.DataHandle;
+import com.heynight0712.hnitem.utils.data.ItemData;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -32,6 +33,11 @@ public class Map implements Listener {
 
                 event.setCancelled(true);
                 event.getWhoClicked().sendMessage(LanguageManager.getString("item.not_owner"));
+            }
+
+            if (DataHandle.old(itemData.getItemStack().getItemMeta(), (Player) event.getWhoClicked(), itemData) && event.getSlot() == 2) {
+                event.setCancelled(true);
+                event.getWhoClicked().sendMessage("這是舊簽名系統 請交給管理員轉換");
             }
         }
     }

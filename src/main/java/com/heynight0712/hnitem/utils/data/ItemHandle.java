@@ -1,7 +1,7 @@
-package com.heynight0712.hnplayersignature.utils.data;
+package com.heynight0712.hnitem.utils.data;
 
-import com.heynight0712.hnplayersignature.core.LanguageManager;
-import com.heynight0712.hnplayersignature.data.Key;
+import com.heynight0712.hnitem.core.LanguageManager;
+import com.heynight0712.hnitem.data.Key;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;

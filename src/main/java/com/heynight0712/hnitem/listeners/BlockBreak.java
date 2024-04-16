@@ -1,10 +1,10 @@
-package com.heynight0712.hnplayersignature.listeners;
+package com.heynight0712.hnitem.listeners;
 
-import com.heynight0712.hnplayersignature.core.LanguageManager;
-import com.heynight0712.hnplayersignature.data.Key;
-import com.heynight0712.hnplayersignature.utils.data.DataHandle;
-import com.heynight0712.hnplayersignature.utils.data.ItemData;
-import com.heynight0712.hnplayersignature.utils.data.ItemHandle;
+import com.heynight0712.hnitem.core.LanguageManager;
+import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.utils.data.DataHandle;
+import com.heynight0712.hnitem.utils.data.ItemData;
+import com.heynight0712.hnitem.utils.data.ItemHandle;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;

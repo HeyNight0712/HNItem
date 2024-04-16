@@ -1,4 +1,4 @@
-package com.heynight0712.hnplayersignature.utils.data;
+package com.heynight0712.hnitem.utils.data;
 
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

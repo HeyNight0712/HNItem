@@ -1,6 +1,6 @@
-name: HNPlayerSignature
+name: HNItem
 version: '${version}'
-main: com.heynight0712.hnplayersignature.HNPlayerSignature
+main: com.heynight0712.hnitem.HNItem
 api-version: '1.20'
 softdepend: [Vault]
 loadbefore:
@@ -8,9 +8,14 @@ loadbefore:
 
 ####################################################
 commands:
-  hnplayersignature:
+  sign:
     aliases: [sign]
     description: "簽名物品系統"
-    usage: /hnplayersignature [subcommand]
+    usage: /sign [subcommand]
+
+  withdraw:
+    aliases: [withdraw]
+    description: "貨幣實體化"
+    usage: /withdraw <幣值> <數量>
 
 ####################################################

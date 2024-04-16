@@ -1,7 +1,7 @@
-package com.heynight0712.hnplayersignature.listeners;
+package com.heynight0712.hnitem.listeners;
 
-import com.heynight0712.hnplayersignature.data.Key;
-import com.heynight0712.hnplayersignature.utils.data.ItemData;
+import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.utils.data.ItemData;
 import org.bukkit.block.Banner;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

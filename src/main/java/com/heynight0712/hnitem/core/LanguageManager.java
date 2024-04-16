@@ -1,4 +1,4 @@
-package com.heynight0712.hnplayersignature.core;
+package com.heynight0712.hnitem.core;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
