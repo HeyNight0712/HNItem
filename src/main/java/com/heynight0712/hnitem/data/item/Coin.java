@@ -1,5 +1,6 @@
 package com.heynight0712.hnitem.data.item;
 
+import com.heynight0712.hnitem.core.LanguageManager;
 import com.heynight0712.hnitem.data.Key;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -18,14 +19,20 @@ public class Coin {
     public Coin(double value) {
         this.value = value;
 
+
+
         // 初始化
         ItemMeta meta = item.getItemMeta();
         if (meta == null) throw new RuntimeException("初始化自訂義 經濟實體化失敗");
+
+        // 獲取 language.yml Coin 文黨
         List<String> lore = new ArrayList<>();
-        lore.add(ChatColor.GOLD + "價值: " + ChatColor.YELLOW + value + " $");
-        lore.add(" ");
-        lore.add(ChatColor.DARK_GRAY + "右鍵- 消耗一張");
-        lore.add(ChatColor.DARK_GRAY + "蹲下 + 右鍵- 消耗手上");
+        List<String> langLore = LanguageManager.getConfig().getStringList("Item.Coin.Lore");
+        for (String line : langLore) {
+            line = ChatColor.translateAlternateColorCodes('&', line); // 設置顏色
+            String processedLine = line.replace("%value%", String.format("%.0f", value));
+            lore.add(processedLine);
+        }
         meta.setLore(lore);
 
         // 設置 NBT 數據

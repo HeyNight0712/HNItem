@@ -4,6 +4,7 @@ import com.heynight0712.hnitem.Hooks.VaultHook;
 import com.heynight0712.hnitem.commands.SignCommand;
 import com.heynight0712.hnitem.commands.WithdrawCommand;
 import com.heynight0712.hnitem.commands.WithdrawCompleter;
+import com.heynight0712.hnitem.core.ConfigManager;
 import com.heynight0712.hnitem.core.LanguageManager;
 import com.heynight0712.hnitem.listeners.BlockBreak;
 import com.heynight0712.hnitem.listeners.BlockPlace;
@@ -18,6 +19,7 @@ public final class HNItem extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        ConfigManager.saveDefaultConfig(this);
         LanguageManager.saveDefaultConfig(this);
 
         // 依賴項目

@@ -34,11 +34,6 @@ public class Map implements Listener {
                 event.setCancelled(true);
                 event.getWhoClicked().sendMessage(LanguageManager.getString("Cartography.NotOwner"));
             }
-
-            if (DataHandle.old(itemData.getItemStack().getItemMeta(), (Player) event.getWhoClicked(), itemData) && event.getSlot() == 2) {
-                event.setCancelled(true);
-                event.getWhoClicked().sendMessage("這是舊簽名系統 請交給管理員轉換");
-            }
         }
     }
 }

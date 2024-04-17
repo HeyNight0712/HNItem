@@ -1,8 +1,8 @@
-# Function
+# Enable
 # Sign 簽名系統 證明自身物品
 # Withdraw 實體化貨幣
 # Map (未完成)
 
-Function:
+Enable:
   Sign: true
   Withdraw: true

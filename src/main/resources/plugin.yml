@@ -11,7 +11,7 @@ commands:
   sign:
     aliases: [sign]
     description: "簽名物品系統"
-    usage: /sign [subcommand]
+    usage: /sign
 
   withdraw:
     aliases: [withdraw]

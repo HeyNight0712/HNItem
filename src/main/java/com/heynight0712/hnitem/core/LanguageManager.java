@@ -43,10 +43,4 @@ public class LanguageManager {
 
         return ChatColor.translateAlternateColorCodes('&', message);
     }
-
-    public static String getString(String path, String def) {
-        String message = languageConfig.getString(path, def);
-
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
 }
