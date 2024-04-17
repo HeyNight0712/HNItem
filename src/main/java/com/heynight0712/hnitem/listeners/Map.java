@@ -20,8 +20,8 @@ public class Map implements Listener {
         // 檢查 製圖台
         if (event.getClickedInventory() instanceof CartographyInventory) {
             ItemData itemData = new ItemData(event.getInventory().getItem(0));
-            PersistentDataContainer container = itemData.getPersistentDataContainer();
             if (itemData.getItemStack().getItemMeta() == null) return;
+            PersistentDataContainer container = itemData.getPersistentDataContainer();
 
             // 檢查 是否簽名
             if (container.has(Key.UUID) && event.getSlot() == 2) {

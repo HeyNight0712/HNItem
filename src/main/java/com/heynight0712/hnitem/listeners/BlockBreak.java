@@ -54,9 +54,7 @@ public class BlockBreak implements Listener {
 
         // 添加 Lore
         String playerName = DataHandle.getPlayerName(UUID.fromString(playerUUID));
-        String lore = LanguageManager.getString("item.lore");
-        lore = lore.replace("%playername%", playerName != null ? playerName : "未知玩家");
-        ItemHandle.addLore(bannerMeta, lore);
+        ItemHandle.addLore(bannerMeta, "Lore.Sign", "%playername%", playerName != null ? playerName : LanguageManager.getString("NotFoundPlayer"));
 
         // 設置 item
         itemData.getItemStack().setItemMeta(bannerMeta);
