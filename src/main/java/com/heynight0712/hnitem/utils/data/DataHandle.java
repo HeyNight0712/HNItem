@@ -1,11 +1,9 @@
 package com.heynight0712.hnitem.utils.data;
 
-import com.heynight0712.hnitem.core.LanguageManager;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.List;
 import java.util.UUID;
 
 public class DataHandle {
@@ -28,28 +26,17 @@ public class DataHandle {
         }
     }
 
-    public static boolean old(ItemMeta itemMeta, Player player, ItemData itemData) {
-        // 暫時使用的方式 舊版本
-        if (itemMeta.hasLore() && !player.isOp()) {
-            // 特殊檢查 舊版本使用
-            List<String> lore = itemMeta.getLore();
-            String loreName = LanguageManager.getString("item.lore");
-            loreName = loreName.replace("%playername%", player.getName());
-            int i = -1;
-            for (String line : lore) {
-                i++;
-                if (line.contains(loreName)) {
-                    lore.remove(i);
-                    itemMeta.setLore(lore);
-                    itemData.getItemStack().setItemMeta(itemMeta);
-                    player.sendMessage(LanguageManager.getString("commands.sign.success.remove"));
-                    return true;
-                }
-            }
-            player.sendMessage(LanguageManager.getString("commands.sign.error.has_lore"));
-            return true;
+    /**
+     * 判定是否圍牆上 旗幟
+     * @param banner Block.getType 旗幟
+     * @return 正確的 Material Banner
+     */
+    public static Material conversionBanner(Material banner) {
+        String bannerName = banner.name();
+        if (bannerName.endsWith("_WALL_BANNER")) {
+            return Material.getMaterial(bannerName.replace("_WALL_BANNER", "_BANNER"));
         }
-        return false;
+        return banner;
     }
 
 }

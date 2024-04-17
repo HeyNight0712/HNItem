@@ -34,7 +34,7 @@ public class BlockBreak implements Listener {
         if (!(bannerContainer.has(Key.UUID, PersistentDataType.STRING))) return false;
 
         // 重新製作物品
-        ItemData itemData = new ItemData(new ItemStack(block.getType()));
+        ItemData itemData = new ItemData(new ItemStack(DataHandle.conversionBanner(block.getType())));
 
         BannerMeta bannerMeta = (BannerMeta) itemData.getItemStack().getItemMeta();
         if (bannerMeta == null) return false;

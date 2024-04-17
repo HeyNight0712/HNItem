@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/HNItem.main.iml" filepath="$PROJECT_DIR$/.idea/modules/HNItem.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/HNPlayerSignature.main.iml" filepath="$PROJECT_DIR$/.idea/modules/HNPlayerSignature.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/com.heynight0712.HNItem.main.iml" filepath="$PROJECT_DIR$/.idea/modules/com.heynight0712.HNItem.main.iml" />
     </modules>
   </component>
 </project>

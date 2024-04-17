@@ -37,10 +37,6 @@ public class SignCommand implements CommandExecutor {
             // 檢查是否簽名
             PersistentDataContainer container = itemData.getPersistentDataContainer();
             if (!container.has(Key.UUID)) {
-
-                // 暫時使用的方式 舊版本
-                if (DataHandle.old(itemMeta, player, itemData)) {return true;}
-
                 add();
                 return true;
             }
