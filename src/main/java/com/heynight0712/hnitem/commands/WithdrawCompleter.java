@@ -13,11 +13,11 @@ public class WithdrawCompleter implements TabCompleter {
         List<String> list = new ArrayList<>();
 
         if (strings.length == 1) {
-            list.add("<幣值>");
+            list.add("Value");
         }
 
         if (strings.length == 2) {
-            list.add("<數量>");
+            list.add("Amount");
         }
 
         return list;

@@ -10,6 +10,7 @@ import java.io.File;
 public class LanguageManager {
     private static File languageFile;
     private static FileConfiguration languageConfig;
+    public static String title = "[System] ";
 
     public static void saveDefaultConfig(JavaPlugin plugin) {
         if (languageFile == null) {
@@ -23,6 +24,7 @@ public class LanguageManager {
         if (languageConfig == null) {
             languageConfig = YamlConfiguration.loadConfiguration(languageFile);
         }
+        title = LanguageManager.getString("Title");
     }
 
     public static FileConfiguration getConfig() {

@@ -1,22 +1,59 @@
-system:
-  title: "&8[&c系統&8] "
-  command: "&a註冊 &f%command% &a指令"
+# 基礎
+Title: "&8[&c系統&8] "
 
-commands:
-  sign:
-    success:
-      add: "&a成功添加簽章"
-      remove: "&a成功移除簽章"
+# 其他輸出文本
+NotFoundPlayer: "&7未知玩家"
+NotPlayer: "&c這個指令只能由玩家執行"
+Error: "&c錯誤!!"
 
-    error:
-      no_item: "&c你手上沒有物品"
-      no_sign: "&c這物品沒有簽證"
-      not_player: "&c這個指令只能由玩家執行"
-      not_owner: "&c你不是擁有者 &7簽證玩家: %playername%"
-      has_lore: "&c上面有其他屬性 Lore 無法簽證"
-      has_sign: "&c這已經被簽證過  &7簽證玩家: %playername%"
+# 指令輸出
+Commands:
+  # 簽名
+  Sign:
+    Success:
+      Add: "&a成功添加簽章"
+      Remove: "&a成功移除簽章"
 
-item:
-  lore: "&6[個人個人簽章] &a玩家 %playername% 的物品"
-  not_owner: "&f僅有 簽證 ID 才可修改及更動設定"
+    # not_owner / has_sign
+    # %playername% - 已簽證玩家ID
+    Fail:
+      NotItem: "&c你手上沒有物品"
+      NotSign: "&c這物品沒有簽證"
+      NotOwner: "&c你不是擁有者 &7簽證玩家: %playername%"
+      HasLore: "&c上面有其他屬性 Lore 無法簽證"
+      HasSign: "&c這已經被簽證過  &7簽證玩家: %playername%"
+
+
+  # 提領
+  Withdraw:
+    # Success
+    # %value% - 消耗金額
+    # %balance% - 剩餘餘額
+    Success: "&7已提領 &c%value% &7餘額: &e%balance%"
+
+    Fail:
+      IncompleteCommand: "&c完整指令: /withdraw <幣值> <數量>"
+      InvalidValue: "&c這不是一個有效幣值"
+      InvalidAmount: "&c這不是一個有效數量"
+      ExceededAmount: "&c最大提領一組數量: 64"
+      InventoryFull: "&c背包已滿"
+      InsufficientBalance: "&c餘額不足"
+
+
+# 物品 Lore 資訊
+# sign
+# %playername% - 簽證玩家 ID
+Lore:
+  Sign: "&6[個人簽章] &a玩家 %playername% 的物品"
+
+# 製圖台互動
+Cartography:
+  NotOwner: "&f僅有 簽證 ID 才可修改及更動設定"
+
+# 玩家互動
+Player:
+  # UseCoinItem
+  # %value% - 獲取金額
+  # %balance% - 獲得後餘額
+  UseCoinItem: "&7已匯入金額 &a%value%  &7餘額: &e%balance%"
 

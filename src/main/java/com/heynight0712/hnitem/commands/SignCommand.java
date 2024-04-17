@@ -13,13 +13,12 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.List;
 import java.util.UUID;
 
 public class SignCommand implements CommandExecutor {
     private ItemData itemData;
     private Player player;
-
+    
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
@@ -29,10 +28,9 @@ public class SignCommand implements CommandExecutor {
             // 獲取 手上物品
             itemData = new ItemData(player.getInventory().getItemInMainHand());
             ItemMeta itemMeta = itemData.getItemStack().getItemMeta();
-
             // 檢查 是否為空
             if (itemMeta == null) {
-                player.sendMessage(LanguageManager.getString("commands.sign.error.no_item"));
+                player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Sign.Fail.NotItem"));
                 return true;
             }
 
@@ -51,15 +49,15 @@ public class SignCommand implements CommandExecutor {
             if (ItemHandle.isOwner(container, player)) {
                 remove();
             } else {
-                String not_owner = LanguageManager.getString("commands.sign.error.not_owner");
+                String not_owner = LanguageManager.getString("Commands.Sign.Fail.NotOwner");
                 String ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(Key.UUID, PersistentDataType.STRING)));
-                not_owner = not_owner.replace("%playername%", ownerName != null ? ownerName : "未知玩家");
-                player.sendMessage(not_owner);
+                not_owner = not_owner.replace("%playername%", ownerName != null ? ownerName : LanguageManager.getString("NotFoundPlayer"));
+                player.sendMessage(LanguageManager.title + not_owner);
             }
 
             return true;
         }
-        commandSender.sendMessage(LanguageManager.getString("commands.sign.error.not_player"));
+        commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("NotPlayer"));
         return true;
     }
 
@@ -72,10 +70,10 @@ public class SignCommand implements CommandExecutor {
         // add
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         container.set(Key.UUID, PersistentDataType.STRING, player.getUniqueId().toString());
-        ItemHandle.addLore(itemMeta, "item.lore", "%playername%", player.getName());
+        ItemHandle.addLore(itemMeta, "Lore.Sign", "%playername%", player.getName());
         itemData.getItemStack().setItemMeta(itemMeta);
 
-        player.sendMessage(LanguageManager.getString("commands.sign.success.add"));
+        player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Sign.Success.Add"));
     }
 
     private void remove() {
@@ -85,6 +83,6 @@ public class SignCommand implements CommandExecutor {
         container.remove(Key.UUID);
         itemData.getItemStack().setItemMeta(itemMeta);
 
-        player.sendMessage(LanguageManager.getString("commands.sign.success.remove"));
+        player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Sign.Success.Remove"));
     }
 }

@@ -32,7 +32,7 @@ public class Map implements Listener {
                 if (container.get(Key.UUID, PersistentDataType.STRING).equals(playerUUID)) return;
 
                 event.setCancelled(true);
-                event.getWhoClicked().sendMessage(LanguageManager.getString("item.not_owner"));
+                event.getWhoClicked().sendMessage(LanguageManager.getString("Cartography.NotOwner"));
             }
 
             if (DataHandle.old(itemData.getItemStack().getItemMeta(), (Player) event.getWhoClicked(), itemData) && event.getSlot() == 2) {

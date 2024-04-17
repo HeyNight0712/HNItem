@@ -1,6 +1,7 @@
 package com.heynight0712.hnitem.listeners;
 
 import com.heynight0712.hnitem.Hooks.VaultHook;
+import com.heynight0712.hnitem.core.LanguageManager;
 import com.heynight0712.hnitem.data.Key;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -51,10 +52,16 @@ public class CoinClick implements Listener {
 
         // 判定 經濟
         if (resp.transactionSuccess()) {
-            player.sendMessage(ChatColor.YELLOW + "已匯入金額 " + value + " 餘額: " + econ.getBalance(player));
+
+            // 輸入轉換
+            String UseCoinItem = LanguageManager.getString("Player.UseCoinItem");
+            UseCoinItem = UseCoinItem.replace("%value%", String.valueOf(value));
+            UseCoinItem = UseCoinItem.replace("%balance%", String.valueOf(econ.getBalance(player)));
             item.setAmount(item.getAmount() - amount);
+
+            player.sendMessage(LanguageManager.title + UseCoinItem);
         }else {
-            player.sendMessage(ChatColor.RED + "錯誤!!!");
+            player.sendMessage(LanguageManager.title + LanguageManager.getString("Error"));
         }
     }
 
