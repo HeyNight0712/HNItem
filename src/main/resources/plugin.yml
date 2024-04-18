@@ -18,4 +18,8 @@ commands:
     description: "貨幣實體化"
     usage: /withdraw <幣值> <數量>
 
+  maptransfer:
+    aliases: [maptransfer]
+    description: "轉化地圖使用"
+    usage: /maptransfer
 ####################################################

@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.heynight0712'
-version = '0.3.0'
+version = '0.4.0'
 
 repositories {
     mavenCentral()
@@ -21,8 +21,10 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:24.0.0'
     compileOnly "org.spigotmc:spigot-api:1.20.4-R0.1-SNAPSHOT"
     compileOnly "com.github.MilkBowl:VaultAPI:1.7"
+    implementation 'org.xerial:sqlite-jdbc:3.45.3.0'
 }
 
 def targetJavaVersion = 17

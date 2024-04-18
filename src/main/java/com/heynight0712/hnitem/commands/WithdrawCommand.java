@@ -6,16 +6,16 @@ import com.heynight0712.hnitem.data.item.Coin;
 import com.heynight0712.hnitem.utils.data.DataHandle;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class WithdrawCommand implements CommandExecutor {
     @Override
-    public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
-        if (commandSender instanceof Player) {
+    public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
+        if (commandSender instanceof Player player) {
             // 檢查 指令
             if (strings.length < 2) {
                 commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Withdraw.Fail.IncompleteCommand"));
@@ -40,7 +40,6 @@ public class WithdrawCommand implements CommandExecutor {
             }
 
             // 數值控制
-            Player player = (Player) commandSender;
             double value = (Integer.parseInt(strings[0]) * Integer.parseInt(strings[1]));
             Economy econ = VaultHook.getEconomy();
 

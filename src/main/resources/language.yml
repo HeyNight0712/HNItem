@@ -5,6 +5,7 @@ Title: "&8[&c系統&8] "
 NotFoundPlayer: "&7未知玩家"
 NotPlayer: "&c這個指令只能由玩家執行"
 Error: "&c錯誤!!"
+NotItem: "&c你手上沒有物品"
 
 # 指令輸出
 Commands:
@@ -38,6 +39,14 @@ Commands:
       ExceededAmount: "&c最大提領一組數量: 64"
       InventoryFull: "&c背包已滿"
       InsufficientBalance: "&c餘額不足"
+
+
+  MapTransfer:
+    Fail:
+      NotItem: "&c你手上沒有物品"
+      NotMap: "&c手上的物品不是地圖"
+      MapIncomplete: "&c手上的地圖資訊不完整 無法轉換"
+
 
 Item:
   Coin:
