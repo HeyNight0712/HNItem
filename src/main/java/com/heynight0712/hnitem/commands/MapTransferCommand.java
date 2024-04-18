@@ -27,31 +27,35 @@ public class MapTransferCommand implements CommandExecutor {
 
         // 檢查 手上物品
         if (itemMeta == null) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("MapTransfer.Fail.NotItem"));
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotItem"));
             return true;
         }
 
         // 檢查 是否地圖
         if (!(itemMeta instanceof MapMeta mapMeta)) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("MapTransfer.Fail.NotMap"));
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotMap"));
             return true;
         }
 
-        // 檢查 地圖資訊是否完整
-        if (!mapMeta.hasMapView()) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("MapTransfer.Fail.MapIncomplete"));
+        MapView mapView = mapMeta.getMapView();
+        // 檢查 地圖資料
+        if (mapView == null) {
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotMapData"));
             return true;
         }
 
-        MapView originalMapView = mapMeta.getMapView();
-
-        player.sendMessage("新地图创建成功，虚拟ID:");
+        // 檢查 是否已鎖定
+        if (!mapView.isLocked()) {
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotLocked"));
+            return true;
+        }
 
         MapDatabase mapDatabase = new MapDatabase();
-        if (mapDatabase.addMap(originalMapView.getId(), player.getUniqueId().toString())) {
-            player.sendMessage("成功綁定");
+        // 檢查 是否成功綁定
+        if (mapDatabase.addMap(mapView.getId(), player.getUniqueId().toString())) {
+            player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Success"));
         }else {
-            player.sendMessage("綁定失敗 請聯絡管理員");
+            player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.HasLocked"));
         }
         return true;
     }

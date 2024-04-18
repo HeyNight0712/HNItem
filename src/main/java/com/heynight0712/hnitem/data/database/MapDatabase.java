@@ -18,8 +18,10 @@ public class MapDatabase {
     public void createMapTable() {
         String sql = """
                 CREATE TABLE IF NOT EXISTS Map (
-                ID INTEGER PRIMARY KEY,
-                UUID TEXT NOT NULL);
+                MapID INTEGER PRIMARY KEY,
+                UUID TEXT NOT NULL,
+                Name TEXT NOT NULL,
+                Locked BOOLEAN NOT NULL);
                 """;
         try (Statement statement = connection.createStatement()) {
             statement.execute(sql);
@@ -29,21 +31,19 @@ public class MapDatabase {
         }
     }
 
-    public boolean addMap(int id, String uuid) {
-        String sql = "INSERT INTO Map (ID, UUID) VALUES (?,?)";
+    public boolean addMap(int mpaID, String uuid) {
+        String sql = "INSERT INTO Map (MAPID, UUID, Name, Locked) VALUES (?,?,?,?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setInt(1, id);
+            statement.setInt(1, mpaID);
             statement.setString(2, uuid);
+            statement.setString(3, "Unknown");
+            statement.setBoolean(4, false);
 
             int affectedRows = statement.executeUpdate();
 
-            if (affectedRows != 0) {return true;}
-
-            HNItem.getInstance().getLogger().info("[Map Database] " + "ID: " + id + "| UUID: " + uuid + " -- No rows affected.");
-            return false;
+            return affectedRows != 0;
         } catch (SQLException e) {
-            HNItem.getInstance().getLogger().severe("[Map Database] Error adding the map: " + e.getMessage());
             return false;
         }
     }

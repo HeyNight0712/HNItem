@@ -41,11 +41,17 @@ Commands:
       InsufficientBalance: "&c餘額不足"
 
 
+  # 地圖相關
   MapTransfer:
+    Success: "&7地圖綁定成功 地圖ID: &b%mapid%"
+
     Fail:
+      NotPlayer: "&c這個指令只能由玩家執行"
       NotItem: "&c你手上沒有物品"
       NotMap: "&c手上的物品不是地圖"
-      MapIncomplete: "&c手上的地圖資訊不完整 無法轉換"
+      NotMapData: "&c此未知的地圖 無法綁定"
+      NotLocked: "&c地圖需要已鎖定 才可進行綁定"
+      HasLocked: "&c這張已被綁定 使用 &7/map 查看資訊"
 
 
 Item:
