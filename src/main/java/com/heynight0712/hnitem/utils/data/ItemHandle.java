@@ -1,7 +1,7 @@
 package com.heynight0712.hnitem.utils.data;
 
 import com.heynight0712.hnitem.core.LanguageManager;
-import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.data.KeyManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
@@ -19,20 +19,9 @@ public class ItemHandle {
      * @return 是則返回 True
      */
     public static boolean isOwner(PersistentDataContainer container, Player player) {
-        String ownerUUID = container.get(Key.UUID, PersistentDataType.STRING);
+        String ownerUUID = container.get(KeyManager.UUID, PersistentDataType.STRING);
         String playerUUID = player.getUniqueId().toString();
         return ownerUUID == null || ownerUUID.equals(playerUUID);
-    }
-
-    /**
-     * 添加 lore
-     * @param itemMeta 物品itemMeta
-     * @param message 添加訊息
-     */
-    public static void addLore(ItemMeta itemMeta, String message) {
-        List<String> lore = itemMeta.hasLore() ? itemMeta.getLore() : new ArrayList<>();
-        lore.add(LanguageManager.getString(message));
-        itemMeta.setLore(lore);
     }
 
     /**

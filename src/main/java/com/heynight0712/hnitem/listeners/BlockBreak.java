@@ -1,7 +1,7 @@
 package com.heynight0712.hnitem.listeners;
 
 import com.heynight0712.hnitem.core.LanguageManager;
-import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.data.KeyManager;
 import com.heynight0712.hnitem.utils.data.DataHandle;
 import com.heynight0712.hnitem.utils.data.ItemData;
 import com.heynight0712.hnitem.utils.data.ItemHandle;
@@ -25,30 +25,29 @@ public class BlockBreak implements Listener {
         onBanner(block, event);
     }
 
-    private boolean onBanner(Block block, BlockBreakEvent event) {
-        if (!(block.getState() instanceof Banner)) return false;
-        Banner banner = (Banner) block.getState();
+    private void onBanner(Block block, BlockBreakEvent event) {
+        if (!(block.getState() instanceof Banner banner)) return;
         PersistentDataContainer bannerContainer = banner.getPersistentDataContainer();
 
         // 檢查是否簽名
-        if (!(bannerContainer.has(Key.UUID, PersistentDataType.STRING))) return false;
+        if (!(bannerContainer.has(KeyManager.UUID, PersistentDataType.STRING))) return;
 
         // 重新製作物品
         ItemData itemData = new ItemData(new ItemStack(DataHandle.conversionBanner(block.getType())));
 
         BannerMeta bannerMeta = (BannerMeta) itemData.getItemStack().getItemMeta();
-        if (bannerMeta == null) return false;
+        if (bannerMeta == null) return;
 
         // 返回 旗幟樣式
         bannerMeta.setPatterns(banner.getPatterns());
 
         // 返回 Key.UUID
-        String playerUUID = bannerContainer.get(Key.UUID, PersistentDataType.STRING);
-        bannerMeta.getPersistentDataContainer().set(Key.UUID, PersistentDataType.STRING, playerUUID);
+        String playerUUID = bannerContainer.get(KeyManager.UUID, PersistentDataType.STRING);
+        bannerMeta.getPersistentDataContainer().set(KeyManager.UUID, PersistentDataType.STRING, playerUUID);
 
         // 返回 物品名稱
-        if (bannerContainer.has(Key.DisplayName, PersistentDataType.STRING)) {
-            String displayName = bannerContainer.get(Key.DisplayName, PersistentDataType.STRING);
+        if (bannerContainer.has(KeyManager.DisplayName, PersistentDataType.STRING)) {
+            String displayName = bannerContainer.get(KeyManager.DisplayName, PersistentDataType.STRING);
             bannerMeta.setDisplayName(displayName);
         }
 
@@ -60,6 +59,5 @@ public class BlockBreak implements Listener {
         itemData.getItemStack().setItemMeta(bannerMeta);
         event.getBlock().getWorld().dropItemNaturally(event.getBlock().getLocation(), itemData.getItemStack());
         event.setDropItems(false);
-        return true;
     }
 }

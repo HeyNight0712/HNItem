@@ -2,10 +2,9 @@ package com.heynight0712.hnitem.listeners;
 
 import com.heynight0712.hnitem.Hooks.VaultHook;
 import com.heynight0712.hnitem.core.LanguageManager;
-import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.data.KeyManager;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -34,10 +33,10 @@ public class CoinClick implements Listener {
 
         // 檢查 經濟
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        if (!container.has(Key.Value)) return;
+        if (!container.has(KeyManager.Value)) return;
 
         // 控制數量
-        double value = container.get(Key.Value, PersistentDataType.DOUBLE);
+        double value = container.get(KeyManager.Value, PersistentDataType.DOUBLE);
         int amount = 1;
 
         // 檢查 蹲下
@@ -72,7 +71,6 @@ public class CoinClick implements Listener {
      */
     private boolean checkRight(PlayerInteractEvent event) {
         if (event.getAction() == Action.RIGHT_CLICK_AIR) return true;
-        if (event.getAction() == Action.RIGHT_CLICK_BLOCK) return true;
-        return false;
+        return event.getAction() == Action.RIGHT_CLICK_BLOCK;
     }
 }

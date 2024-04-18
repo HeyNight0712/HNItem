@@ -1,10 +1,7 @@
 package com.heynight0712.hnitem;
 
 import com.heynight0712.hnitem.Hooks.VaultHook;
-import com.heynight0712.hnitem.commands.MapTransferCommand;
-import com.heynight0712.hnitem.commands.SignCommand;
-import com.heynight0712.hnitem.commands.WithdrawCommand;
-import com.heynight0712.hnitem.commands.WithdrawCompleter;
+import com.heynight0712.hnitem.commands.*;
 import com.heynight0712.hnitem.core.ConfigManager;
 import com.heynight0712.hnitem.core.LanguageManager;
 import com.heynight0712.hnitem.data.DatabaseManager;
@@ -82,6 +79,12 @@ public final class HNItem extends JavaPlugin {
         PluginCommand maptransfer = this.getCommand("maptransfer");
         if (maptransfer != null) {
             maptransfer.setExecutor(new MapTransferCommand());
+        }
+
+        // map
+        PluginCommand map = this.getCommand("map");
+        if (map != null) {
+            map.setExecutor(new MapCommand());
         }
     }
 

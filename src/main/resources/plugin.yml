@@ -22,4 +22,9 @@ commands:
     aliases: [maptransfer]
     description: "轉化地圖使用"
     usage: /maptransfer
+
+  map:
+    aliases: [map]
+    description: "顯示地圖資訊"
+    usage: /map
 ####################################################

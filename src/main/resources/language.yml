@@ -51,7 +51,25 @@ Commands:
       NotMap: "&c手上的物品不是地圖"
       NotMapData: "&c此未知的地圖 無法綁定"
       NotLocked: "&c地圖需要已鎖定 才可進行綁定"
+      NotOwner: "&c你不是擁有者 &7簽證玩家: %playername%"
       HasLocked: "&c這張已被綁定 使用 &7/map 查看資訊"
+
+    Update: "&7成功更新資料"
+
+  Map:
+    Success:
+      - "&6地圖名稱: &f%name% &b%mapid%"
+      - "&6擁有者 &8- &3%playername%"
+      - "&6鎖定狀態 &8- &e%locked%"
+      - "&6創建時間 &8- &a%date%"
+
+    Fail:
+      NotPlayer: "&c這個指令只能由玩家執行"
+      NotItem: "&c你手上沒有物品"
+      NotMap: "&c手上的物品不是地圖"
+      NotMapData: "&c此未知的地圖 無法查詢"
+      NotLocked: "&c這地圖未鎖定 無法查詢"
+      NotTransfer: "&c地圖尚未轉移"
 
 
 Item:
@@ -67,6 +85,10 @@ Item:
 # %playername% - 簽證玩家 ID
 Lore:
   Sign: "&6[個人簽章] &a玩家 %playername% 的物品"
+
+  MapTransfer: "&6[地圖擁有者] &a玩家 %playername%"
+  MapLocked: "&7地圖已鎖定 僅擁有者能進行複製,更改動作"
+  MapNoLocked: "&7地圖未鎖定 所有人可以進行複製"
 
 # 製圖台互動
 Cartography:

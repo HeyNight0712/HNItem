@@ -1,7 +1,7 @@
 package com.heynight0712.hnitem.commands;
 
 import com.heynight0712.hnitem.core.LanguageManager;
-import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.data.KeyManager;
 import com.heynight0712.hnitem.utils.data.DataHandle;
 import com.heynight0712.hnitem.utils.data.ItemData;
 import com.heynight0712.hnitem.utils.data.ItemHandle;
@@ -37,7 +37,7 @@ public class SignCommand implements CommandExecutor {
 
             // 檢查是否簽名
             PersistentDataContainer container = itemData.getPersistentDataContainer();
-            if (!container.has(Key.UUID)) {
+            if (!container.has(KeyManager.UUID)) {
                 add();
                 return true;
             }
@@ -47,7 +47,7 @@ public class SignCommand implements CommandExecutor {
                 remove();
             } else {
                 String not_owner = LanguageManager.getString("Commands.Sign.Fail.NotOwner");
-                String ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(Key.UUID, PersistentDataType.STRING)));
+                String ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(KeyManager.UUID, PersistentDataType.STRING)));
                 not_owner = not_owner.replace("%playername%", ownerName != null ? ownerName : LanguageManager.getString("NotFoundPlayer"));
                 player.sendMessage(LanguageManager.title + not_owner);
             }
@@ -66,7 +66,7 @@ public class SignCommand implements CommandExecutor {
 
         // add
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        container.set(Key.UUID, PersistentDataType.STRING, player.getUniqueId().toString());
+        container.set(KeyManager.UUID, PersistentDataType.STRING, player.getUniqueId().toString());
         ItemHandle.addLore(itemMeta, "Lore.Sign", "%playername%", player.getName());
         itemData.getItemStack().setItemMeta(itemMeta);
 
@@ -77,7 +77,7 @@ public class SignCommand implements CommandExecutor {
         ItemMeta itemMeta = itemData.getItemStack().getItemMeta();
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         itemMeta.setLore(null);
-        container.remove(Key.UUID);
+        container.remove(KeyManager.UUID);
         itemData.getItemStack().setItemMeta(itemMeta);
 
         player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Sign.Success.Remove"));

@@ -1,11 +1,10 @@
 package com.heynight0712.hnitem.data.database;
 
 import com.heynight0712.hnitem.HNItem;
+import com.heynight0712.hnitem.data.MapInfo;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 
 public class MapDatabase {
     private final Connection connection;
@@ -21,7 +20,9 @@ public class MapDatabase {
                 MapID INTEGER PRIMARY KEY,
                 UUID TEXT NOT NULL,
                 Name TEXT NOT NULL,
-                Locked BOOLEAN NOT NULL);
+                Locked BOOLEAN NOT NULL,
+                DateTime TEXT DEFAULT (date('now', 'localtime')),
+                Lore TEXT);
                 """;
         try (Statement statement = connection.createStatement()) {
             statement.execute(sql);
@@ -31,14 +32,14 @@ public class MapDatabase {
         }
     }
 
-    public boolean addMap(int mpaID, String uuid) {
+    public boolean addMap(int mpaID, String uuid, String name, boolean locked) {
         String sql = "INSERT INTO Map (MAPID, UUID, Name, Locked) VALUES (?,?,?,?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, mpaID);
             statement.setString(2, uuid);
-            statement.setString(3, "Unknown");
-            statement.setBoolean(4, false);
+            statement.setString(3, name);
+            statement.setBoolean(4, locked);
 
             int affectedRows = statement.executeUpdate();
 
@@ -46,5 +47,26 @@ public class MapDatabase {
         } catch (SQLException e) {
             return false;
         }
+    }
+
+    public MapInfo getMap(int mpaID) {
+        String sql = "SELECT * FROM Map WHERE MapID = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, mpaID);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                String uuid = resultSet.getString("UUID");
+                String name = resultSet.getString("Name");
+                boolean locked = resultSet.getBoolean("Locked");
+                LocalDate date = LocalDate.parse(resultSet.getString("DateTime"));
+
+                return new MapInfo(mpaID, uuid, name, locked, date);
+            }
+        } catch (SQLException e) {
+            return null;
+        }
+        return null;
     }
 }

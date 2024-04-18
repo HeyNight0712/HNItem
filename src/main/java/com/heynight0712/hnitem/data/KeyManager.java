@@ -4,7 +4,7 @@ import com.heynight0712.hnitem.HNItem;
 import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class Key {
+public class KeyManager {
     public static final NamespacedKey UUID;
     public static final NamespacedKey DisplayName;
     public static final NamespacedKey Value;

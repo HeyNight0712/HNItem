@@ -1,7 +1,7 @@
 package com.heynight0712.hnitem.data.item;
 
 import com.heynight0712.hnitem.core.LanguageManager;
-import com.heynight0712.hnitem.data.Key;
+import com.heynight0712.hnitem.data.KeyManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Coin {
-    private static ItemStack item = new ItemStack(Material.PAPER);
-    private double value;
+    private static final ItemStack item = new ItemStack(Material.PAPER);
+    private final double value;
 
     public Coin(double value) {
         this.value = value;
@@ -37,14 +37,10 @@ public class Coin {
 
         // 設置 NBT 數據
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        container.set(Key.Value, PersistentDataType.DOUBLE, value);
+        container.set(KeyManager.Value, PersistentDataType.DOUBLE, value);
 
         item.setItemMeta(meta);
     }
-
-    public double getValue() {return value;}
-
-    public ItemStack getItem() {return item;}
 
     public ItemStack getItem(int amount) {
         item.setAmount(amount);
