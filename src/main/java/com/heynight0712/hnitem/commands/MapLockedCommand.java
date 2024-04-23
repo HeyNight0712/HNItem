@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MapTransferCommand implements CommandExecutor {
+public class MapLockedCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -36,32 +36,32 @@ public class MapTransferCommand implements CommandExecutor {
 
         // 檢查 手上物品
         if (itemMeta == null) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotItem"));
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.NotItem"));
             return true;
         }
 
         // 檢查 是否地圖
         if (!(itemMeta instanceof MapMeta mapMeta)) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotMap"));
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.NotMap"));
             return true;
         }
 
         MapView mapView = mapMeta.getMapView();
         // 檢查 地圖資料
         if (mapView == null) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotMapData"));
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.NotMapData"));
             return true;
         }
 
         // 檢查 是否已鎖定
         if (!mapView.isLocked()) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.NotLocked"));
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.NotLocked"));
             return true;
         }
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         List<String> lore = new ArrayList<>();
-        String ownerName;
+        String ownerName = null;
 
         // 檢查 UUID Key
         // 防止 已簽名後 直接綁定
@@ -70,7 +70,7 @@ public class MapTransferCommand implements CommandExecutor {
 
             // 檢查 是否擁有者
             if (!ItemHandle.isOwner(container, player)) {
-                String not_owner = LanguageManager.getString("Commands.MapTransfer.Fail.NotOwner");
+                String not_owner = LanguageManager.getString("Commands.MapLocked.Fail.NotOwner");
                 not_owner = not_owner.replace("%playername%", ownerName != null ? ownerName : LanguageManager.getString("NotFoundPlayer"));
                 commandSender.sendMessage(LanguageManager.title + not_owner);
                 return true;
@@ -78,39 +78,43 @@ public class MapTransferCommand implements CommandExecutor {
 
             // 清空舊的
             itemMeta.setLore(null);
-
-            // 數據轉換
-            String mapTransfer = LanguageManager.getString("Lore.MapTransfer");
-            mapTransfer = mapTransfer.replace("%playername%", ownerName != null ? ownerName : LanguageManager.getString("NotFoundPlayer"));
-            lore.add(mapTransfer);
-
-            lore.add(LanguageManager.getString("Lore.MapLocked"));
-            itemMeta.setLore(lore);
-
         }else {
-            // 數據轉換
-            String mapTransfer = LanguageManager.getString("Lore.MapTransfer");
-            mapTransfer = mapTransfer.replace("%playername%", player.getName());
-            lore.add(mapTransfer);
-
-            lore.add(LanguageManager.getString("Lore.MapLocked"));
-            itemMeta.setLore(lore);
-
             // 寫入 NBT
             container.set(KeyManager.UUID, PersistentDataType.STRING, player.getUniqueId().toString());
         }
 
+        // Lore 相關重寫
+        // 上面檢查並且重新添加 Lore 以免資訊不同
+        String MapLocked = LanguageManager.getString("Lore.MapLocked");
+        MapLocked = MapLocked.replace("%playername%", ownerName != null ? ownerName : player.getName());
+        lore.add(MapLocked);
+
+        lore.add(LanguageManager.getString("Lore.MapLockedRule"));
+        itemMeta.setLore(lore);
+
+
         MapDatabase mapDatabase = new MapDatabase();
-
         // 檢查 是否成功綁定到數據庫
-        if (mapDatabase.addMap(mapView.getId(), player.getUniqueId().toString(), "Unknown",true)) {
+        if (strings.length > 0) {
+            if (mapDatabase.addMap(mapView.getId(), player.getUniqueId().toString(), strings[0], true)) {
 
-            String success = LanguageManager.getString("Commands.MapTransfer.Success");
-            success = success.replace("%mapid%", String.valueOf(mapView.getId()));
+                String success = LanguageManager.getString("Commands.MapLocked.Success");
+                success = success.replace("%mapid%", String.valueOf(mapView.getId()));
 
-            player.sendMessage(LanguageManager.title + success);
-        }else {
-            player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapTransfer.Fail.HasLocked"));
+                player.sendMessage(LanguageManager.title + success);
+            } else {
+                player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.HasLocked"));
+            }
+        } else {
+            if (mapDatabase.addMap(mapView.getId(), player.getUniqueId().toString(), "Map", true)) {
+
+                String success = LanguageManager.getString("Commands.MapLocked.Success");
+                success = success.replace("%mapid%", String.valueOf(mapView.getId()));
+
+                player.sendMessage(LanguageManager.title + success);
+            } else {
+                player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.HasLocked"));
+            }
         }
 
         // 更新手中的物品

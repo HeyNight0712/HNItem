@@ -59,7 +59,7 @@ public class MapCommand implements CommandExecutor {
         MapInfo mapInfo = mapDatabase.getMap(mapView.getId());
 
         if (mapInfo == null) {
-            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Map.Fail.NotTransfer"));
+            commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Map.Fail.NotLocked"));
             return true;
         }
 

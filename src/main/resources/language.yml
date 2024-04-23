@@ -23,6 +23,7 @@ Commands:
       NotOwner: "&c你不是擁有者 &7簽證玩家: %playername%"
       HasLore: "&c上面有其他屬性 Lore 無法簽證"
       HasSign: "&c這已經被簽證過  &7簽證玩家: %playername%"
+      HasLocked: "&c這張地圖已被綁定 無法在上面添加/移除簽名 使用 &7/map 查看資訊"
 
 
   # 提領
@@ -42,7 +43,7 @@ Commands:
 
 
   # 地圖相關
-  MapTransfer:
+  MapLocked:
     Success: "&7地圖綁定成功 地圖ID: &b%mapid%"
 
     Fail:
@@ -69,7 +70,6 @@ Commands:
       NotMap: "&c手上的物品不是地圖"
       NotMapData: "&c此未知的地圖 無法查詢"
       NotLocked: "&c這地圖未鎖定 無法查詢"
-      NotTransfer: "&c地圖尚未轉移"
 
 
 Item:
@@ -86,8 +86,8 @@ Item:
 Lore:
   Sign: "&6[個人簽章] &a玩家 %playername% 的物品"
 
-  MapTransfer: "&6[地圖擁有者] &a玩家 %playername%"
-  MapLocked: "&7地圖已鎖定 僅擁有者能進行複製,更改動作"
+  MapLocked: "&6[地圖擁有者] &a玩家 %playername%"
+  MapLockedRule: "&7地圖已鎖定 僅擁有者能進行複製,更改動作"
   MapNoLocked: "&7地圖未鎖定 所有人可以進行複製"
 
 # 製圖台互動

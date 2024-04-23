@@ -76,9 +76,9 @@ public final class HNItem extends JavaPlugin {
         }
 
         // maptransfer
-        PluginCommand maptransfer = this.getCommand("maptransfer");
-        if (maptransfer != null) {
-            maptransfer.setExecutor(new MapTransferCommand());
+        PluginCommand maplocked = this.getCommand("maplocked");
+        if (maplocked != null) {
+            maplocked.setExecutor(new MapLockedCommand());
         }
 
         // map
