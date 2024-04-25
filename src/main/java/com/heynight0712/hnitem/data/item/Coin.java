@@ -13,14 +13,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Coin {
-    private static final ItemStack item = new ItemStack(Material.PAPER);
+    private final ItemStack item;
 
     public Coin(double value) {
-        // 初始化
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) throw new RuntimeException("初始化自訂義 經濟實體化失敗");
+        this.item = createCoinItem(value);
+    }
 
-        // 獲取 language.yml Coin 文黨
+    /**
+     * 創建 CoinItem
+     * @param value 金額
+     * @return 返回 CoinItem
+     */
+    private ItemStack createCoinItem(double value) {
+        ItemStack coinItem = new ItemStack(Material.PAPER);
+        ItemMeta meta = coinItem.getItemMeta();
+
+        if (meta == null) throw new RuntimeException("Failed to initialize Coin");
+
+        List<String> lore = generateLore(value);
+        meta.setLore(lore);
+
+        meta.getPersistentDataContainer().set(KeyManager.getValue(), PersistentDataType.DOUBLE, value);
+
+        coinItem.setItemMeta(meta);
+        return coinItem;
+    }
+
+    /**
+     * 獲取 Lore List
+     * @param value 金額
+     * @return 返回 List<String>
+     */
+    private List<String> generateLore(double value) {
         List<String> lore = new ArrayList<>();
         List<String> langLore = LanguageManager.getConfig().getStringList("Item.Coin.Lore");
         for (String line : langLore) {
@@ -28,15 +52,14 @@ public class Coin {
             String processedLine = line.replace("%value%", String.format("%.0f", value));
             lore.add(processedLine);
         }
-        meta.setLore(lore);
-
-        // 設置 NBT 數據
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-        container.set(KeyManager.getValue(), PersistentDataType.DOUBLE, value);
-
-        item.setItemMeta(meta);
+        return lore;
     }
 
+    /**
+     * 設置數量後返回 Item
+     * @param amount 數量
+     * @return Coin ItemStack
+     */
     public ItemStack getItem(int amount) {
         item.setAmount(amount);
         return item;
