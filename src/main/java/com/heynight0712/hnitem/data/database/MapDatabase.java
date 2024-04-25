@@ -57,16 +57,21 @@ public class MapDatabase {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                String uuid = resultSet.getString("UUID");
-                String name = resultSet.getString("Name");
-                boolean locked = resultSet.getBoolean("Locked");
-                LocalDate date = LocalDate.parse(resultSet.getString("DateTime"));
-
-                return new MapInfo(mpaID, uuid, name, locked, date);
+                return mapInfoFromResultSet(resultSet);
             }
         } catch (SQLException e) {
             return null;
         }
         return null;
+    }
+
+    // 從 ResultSet 中解析 MapInfo
+    private MapInfo mapInfoFromResultSet(ResultSet resultSet) throws SQLException {
+        int mapID = resultSet.getInt("MapID");
+        String uuid = resultSet.getString("UUID");
+        String name = resultSet.getString("Name");
+        boolean locked = resultSet.getBoolean("Locked");
+        LocalDate date = LocalDate.parse(resultSet.getString("DateTime"));
+        return new MapInfo(mapID, uuid, name, locked, date);
     }
 }
