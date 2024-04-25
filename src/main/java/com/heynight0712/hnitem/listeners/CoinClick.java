@@ -22,55 +22,62 @@ public class CoinClick implements Listener {
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        // 檢查 紙
-        if (item.getType() != Material.PAPER) return;
-
-        // 檢查 右鍵
-        if (!checkRight(event)) {return;}
+        if (!isPaper(item) || !isRightClick(event)) return;
 
         ItemMeta meta = item.getItemMeta();
-        if (meta == null) return;
+        if (meta == null || !hasEconomyValue(meta)) return;
 
-        // 檢查 經濟
-        PersistentDataContainer container = meta.getPersistentDataContainer();
-        if (!container.has(KeyManager.getValue())) return;
-
-        // 控制數量
-        double value = container.get(KeyManager.getValue(), PersistentDataType.DOUBLE);
-        int amount = 1;
-
-        // 檢查 蹲下
-        if (player.isSneaking()) {
-            value = value * item.getAmount();
-            amount = item.getAmount();
-        }
-
+        double value = getEconomyValue(meta);
+        int amount = calculateAmount(player, item);
 
         Economy econ = VaultHook.getEconomy();
         EconomyResponse resp = econ.depositPlayer(player, value);
 
-        // 判定 經濟
         if (resp.transactionSuccess()) {
-
-            // 輸入轉換
-            String UseCoinItem = LanguageManager.getString("Player.UseCoinItem");
-            UseCoinItem = UseCoinItem.replace("%value%", String.valueOf(value));
-            UseCoinItem = UseCoinItem.replace("%balance%", String.valueOf(econ.getBalance(player)));
+            String message = formatMessage(value, econ.getBalance(player));
             item.setAmount(item.getAmount() - amount);
-
-            player.sendMessage(LanguageManager.title + UseCoinItem);
+            player.sendMessage(LanguageManager.title + message);
         }else {
             player.sendMessage(LanguageManager.title + LanguageManager.getString("Error"));
         }
     }
 
-    /**
-     * 檢查 是否 右鍵 空氣/方塊
-     * @param event PlayerInteractEvent
-     * @return 如果是則返回 True
-     */
-    private boolean checkRight(PlayerInteractEvent event) {
-        if (event.getAction() == Action.RIGHT_CLICK_AIR) return true;
-        return event.getAction() == Action.RIGHT_CLICK_BLOCK;
+
+    private boolean isPaper(ItemStack item) {
+        return item.getType() == Material.PAPER;
+    }
+
+
+    private boolean isRightClick(PlayerInteractEvent event) {
+        return event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK;
+    }
+
+
+    private boolean hasEconomyValue(ItemMeta meta) {
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        return container.has(KeyManager.getValue());
+    }
+
+
+    private double getEconomyValue(ItemMeta meta) {
+        PersistentDataContainer container = meta.getPersistentDataContainer();
+        return container.get(KeyManager.getValue(), PersistentDataType.DOUBLE);
+    }
+
+
+    private int calculateAmount(Player player, ItemStack item) {
+        int amount = 1;
+        if (player.isSneaking()) {
+            amount = item.getAmount();
+        }
+        return amount;
+    }
+
+
+    private String formatMessage(double value, double balance) {
+        String useCoinItem = LanguageManager.getString("Player.UseCoinItem");
+        useCoinItem = useCoinItem.replace("%value%", String.valueOf(value));
+        useCoinItem = useCoinItem.replace("%balance%", String.valueOf(balance));
+        return useCoinItem;
     }
 }
