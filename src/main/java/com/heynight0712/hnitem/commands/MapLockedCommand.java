@@ -46,8 +46,8 @@ public class MapLockedCommand implements CommandExecutor {
             return true;
         }
 
-        MapView mapView = mapMeta.getMapView();
         // 檢查 地圖資料
+        MapView mapView = mapMeta.getMapView();
         if (mapView == null) {
             commandSender.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.NotMapData"));
             return true;
@@ -67,54 +67,34 @@ public class MapLockedCommand implements CommandExecutor {
         // 防止 已簽名後 直接綁定
         if (container.has(KeyManager.getUUID())) {
             ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(KeyManager.getUUID(), PersistentDataType.STRING)));
-
-            // 檢查 是否擁有者
             if (!ItemHandle.isOwner(container, player)) {
-                String not_owner = LanguageManager.getString("Commands.MapLocked.Fail.NotOwner");
-                not_owner = not_owner.replace("%playername%", ownerName != null ? ownerName : LanguageManager.getString("NotFoundPlayer"));
-                commandSender.sendMessage(LanguageManager.title + not_owner);
+                String notOwnerMessage = LanguageManager.getString("Commands.MapLocked.Fail.NotOwner");
+                notOwnerMessage = notOwnerMessage.replace("%playername%", ownerName != null ? ownerName : LanguageManager.getString("NotFoundPlayer"));
+                commandSender.sendMessage(LanguageManager.title + notOwnerMessage);
                 return true;
             }
-
-            // 清空舊的
             itemMeta.setLore(null);
         }else {
-            // 寫入 NBT
             container.set(KeyManager.getUUID(), PersistentDataType.STRING, player.getUniqueId().toString());
         }
 
-        // Lore 相關重寫
-        // 上面檢查並且重新添加 Lore 以免資訊不同
-        String MapLocked = LanguageManager.getString("Lore.MapLocked");
-        MapLocked = MapLocked.replace("%playername%", ownerName != null ? ownerName : player.getName());
-        lore.add(MapLocked);
-
+        // Lore
+        String mapLockedMessage = LanguageManager.getString("Lore.MapLocked");
+        mapLockedMessage = mapLockedMessage.replace("%playername%", ownerName != null ? ownerName : player.getName());
+        lore.add(mapLockedMessage);
         lore.add(LanguageManager.getString("Lore.MapLockedRule"));
         itemMeta.setLore(lore);
 
-
         MapDatabase mapDatabase = new MapDatabase();
-        // 檢查 是否成功綁定到數據庫
-        if (strings.length > 0) {
-            if (mapDatabase.addMap(mapView.getId(), player.getUniqueId().toString(), strings[0], true)) {
+        String mapName = strings.length > 0 ? strings[0] : "Map";
+        String successMessage = LanguageManager.getString("Commands.MapLocked.Success");
+        String failMessage = LanguageManager.getString("Commands.MapLocked.Fail.HasLocked");
 
-                String success = LanguageManager.getString("Commands.MapLocked.Success");
-                success = success.replace("%mapid%", String.valueOf(mapView.getId()));
-
-                player.sendMessage(LanguageManager.title + success);
-            } else {
-                player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.HasLocked"));
-            }
+        if (mapDatabase.addMap(mapView.getId(), player.getUniqueId().toString(), mapName, true)) {
+            successMessage = successMessage.replace("%mapid%", String.valueOf(mapView.getId()));
+            player.sendMessage(LanguageManager.title + successMessage);
         } else {
-            if (mapDatabase.addMap(mapView.getId(), player.getUniqueId().toString(), "Map", true)) {
-
-                String success = LanguageManager.getString("Commands.MapLocked.Success");
-                success = success.replace("%mapid%", String.valueOf(mapView.getId()));
-
-                player.sendMessage(LanguageManager.title + success);
-            } else {
-                player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.MapLocked.Fail.HasLocked"));
-            }
+            player.sendMessage(LanguageManager.title + failMessage);
         }
 
         // 更新手中的物品

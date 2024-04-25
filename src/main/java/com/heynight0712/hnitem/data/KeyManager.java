@@ -19,7 +19,10 @@ public class KeyManager {
     }
 
     public static NamespacedKey getUUID() {return UUID;}
+
     public static NamespacedKey getDisplayName() {return DisplayName;}
+
     public static NamespacedKey getValue() {return Value;}
+
     public static NamespacedKey getLocked() {return Locked;}
 }
