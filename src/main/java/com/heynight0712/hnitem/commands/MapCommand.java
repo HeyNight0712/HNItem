@@ -65,20 +65,23 @@ public class MapCommand implements CommandExecutor {
 
         // 輸出
         String ownerName = DataHandle.getPlayerName(UUID.fromString(mapInfo.uuid()));
-        List<String> success = LanguageManager.getConfig().getStringList("Commands.Map.Success");
+        List<String> successMessages = LanguageManager.getConfig().getStringList("Commands.Map.Success");
 
-        for (String line : success) {
-            line = ChatColor.translateAlternateColorCodes('&', line);
-            String processedLine;
-            processedLine = line
-                    .replace("%name%", mapInfo.name())
-                    .replace("%mapid%", String.valueOf(mapInfo.mapID()))
-                    .replace("%playername%", ownerName)
-                    .replace("%locked%", String.valueOf(mapInfo.locked()))
-                    .replace("%date%", String.valueOf(mapInfo.date()));
-
-            player.sendMessage(processedLine);
+        for (String message : successMessages) {
+            String formatMessage = formatMessage(mapInfo, ownerName, message);
+            player.sendMessage(formatMessage);
         }
+
         return true;
+    }
+
+    private String formatMessage(MapInfo mapInfo, String ownerName, String message) {
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        return message
+                .replace("%name%", mapInfo.name())
+                .replace("%mapid%", String.valueOf(mapInfo.mapID()))
+                .replace("%playername%", ownerName)
+                .replace("%locked%", String.valueOf(mapInfo.locked()))
+                .replace("%date%", String.valueOf(mapInfo.date()));
     }
 }
