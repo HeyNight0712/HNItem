@@ -64,18 +64,18 @@ public class MapCommand implements CommandExecutor {
         }
 
         // 輸出
-        String ownerName = DataHandle.getPlayerName(UUID.fromString(mapInfo.getUuid()));
+        String ownerName = DataHandle.getPlayerName(UUID.fromString(mapInfo.uuid()));
         List<String> success = LanguageManager.getConfig().getStringList("Commands.Map.Success");
 
         for (String line : success) {
             line = ChatColor.translateAlternateColorCodes('&', line);
             String processedLine;
             processedLine = line
-                    .replace("%name%", mapInfo.getName())
-                    .replace("%mapid%", String.valueOf(mapInfo.getMapID()))
+                    .replace("%name%", mapInfo.name())
+                    .replace("%mapid%", String.valueOf(mapInfo.mapID()))
                     .replace("%playername%", ownerName)
-                    .replace("%locked%", String.valueOf(mapInfo.getLocked()))
-                    .replace("%date%", String.valueOf(mapInfo.getDate()));
+                    .replace("%locked%", String.valueOf(mapInfo.locked()))
+                    .replace("%date%", String.valueOf(mapInfo.date()));
 
             player.sendMessage(processedLine);
         }

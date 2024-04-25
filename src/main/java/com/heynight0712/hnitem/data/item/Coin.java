@@ -14,13 +14,8 @@ import java.util.List;
 
 public class Coin {
     private static final ItemStack item = new ItemStack(Material.PAPER);
-    private final double value;
 
     public Coin(double value) {
-        this.value = value;
-
-
-
         // 初始化
         ItemMeta meta = item.getItemMeta();
         if (meta == null) throw new RuntimeException("初始化自訂義 經濟實體化失敗");
@@ -37,7 +32,7 @@ public class Coin {
 
         // 設置 NBT 數據
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        container.set(KeyManager.Value, PersistentDataType.DOUBLE, value);
+        container.set(KeyManager.getValue(), PersistentDataType.DOUBLE, value);
 
         item.setItemMeta(meta);
     }

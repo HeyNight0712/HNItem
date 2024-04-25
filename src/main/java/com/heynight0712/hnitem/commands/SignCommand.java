@@ -41,7 +41,7 @@ public class SignCommand implements CommandExecutor {
 
             // 檢查是否簽名
             PersistentDataContainer container = itemData.getPersistentDataContainer();
-            if (!container.has(KeyManager.UUID)) {
+            if (!container.has(KeyManager.getUUID())) {
                 add();
                 return true;
             }
@@ -51,7 +51,7 @@ public class SignCommand implements CommandExecutor {
                 remove();
             } else {
                 String not_owner = LanguageManager.getString("Commands.Sign.Fail.NotOwner");
-                String ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(KeyManager.UUID, PersistentDataType.STRING)));
+                String ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(KeyManager.getUUID(), PersistentDataType.STRING)));
                 not_owner = not_owner.replace("%playername%", ownerName != null ? ownerName : LanguageManager.getString("NotFoundPlayer"));
                 player.sendMessage(LanguageManager.title + not_owner);
             }
@@ -70,7 +70,7 @@ public class SignCommand implements CommandExecutor {
         if (isMapLocked(itemMeta)) return; // 過濾簽名地圖
         // add
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
-        container.set(KeyManager.UUID, PersistentDataType.STRING, player.getUniqueId().toString());
+        container.set(KeyManager.getUUID(), PersistentDataType.STRING, player.getUniqueId().toString());
         ItemHandle.addLore(itemMeta, "Lore.Sign", "%playername%", player.getName());
         itemData.getItemStack().setItemMeta(itemMeta);
 
@@ -83,7 +83,7 @@ public class SignCommand implements CommandExecutor {
 
         PersistentDataContainer container = itemMeta.getPersistentDataContainer();
         itemMeta.setLore(null);
-        container.remove(KeyManager.UUID);
+        container.remove(KeyManager.getUUID());
         itemData.getItemStack().setItemMeta(itemMeta);
 
         player.sendMessage(LanguageManager.title + LanguageManager.getString("Commands.Sign.Success.Remove"));

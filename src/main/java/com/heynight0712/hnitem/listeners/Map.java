@@ -23,12 +23,12 @@ public class Map implements Listener {
             PersistentDataContainer container = itemData.getPersistentDataContainer();
 
             // 檢查 是否簽名
-            if (container.has(KeyManager.UUID) && event.getSlot() == 2) {
+            if (container.has(KeyManager.getUUID()) && event.getSlot() == 2) {
                 Player player = (Player) event.getWhoClicked();
                 String playerUUID = String.valueOf(player.getUniqueId());
 
                 // 檢查 UUID 是否相同
-                if (container.get(KeyManager.UUID, PersistentDataType.STRING).equals(playerUUID)) return;
+                if (container.get(KeyManager.getUUID(), PersistentDataType.STRING).equals(playerUUID)) return;
 
                 event.setCancelled(true);
                 event.getWhoClicked().sendMessage(LanguageManager.getString("Cartography.NotOwner"));

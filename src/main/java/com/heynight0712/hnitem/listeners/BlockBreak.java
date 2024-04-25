@@ -30,7 +30,7 @@ public class BlockBreak implements Listener {
         PersistentDataContainer bannerContainer = banner.getPersistentDataContainer();
 
         // 檢查是否簽名
-        if (!(bannerContainer.has(KeyManager.UUID, PersistentDataType.STRING))) return;
+        if (!(bannerContainer.has(KeyManager.getUUID(), PersistentDataType.STRING))) return;
 
         // 重新製作物品
         ItemData itemData = new ItemData(new ItemStack(DataHandle.conversionBanner(block.getType())));
@@ -42,12 +42,12 @@ public class BlockBreak implements Listener {
         bannerMeta.setPatterns(banner.getPatterns());
 
         // 返回 Key.UUID
-        String playerUUID = bannerContainer.get(KeyManager.UUID, PersistentDataType.STRING);
-        bannerMeta.getPersistentDataContainer().set(KeyManager.UUID, PersistentDataType.STRING, playerUUID);
+        String playerUUID = bannerContainer.get(KeyManager.getUUID(), PersistentDataType.STRING);
+        bannerMeta.getPersistentDataContainer().set(KeyManager.getUUID(), PersistentDataType.STRING, playerUUID);
 
         // 返回 物品名稱
-        if (bannerContainer.has(KeyManager.DisplayName, PersistentDataType.STRING)) {
-            String displayName = bannerContainer.get(KeyManager.DisplayName, PersistentDataType.STRING);
+        if (bannerContainer.has(KeyManager.getDisplayName(), PersistentDataType.STRING)) {
+            String displayName = bannerContainer.get(KeyManager.getDisplayName(), PersistentDataType.STRING);
             bannerMeta.setDisplayName(displayName);
         }
 

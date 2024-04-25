@@ -5,10 +5,10 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class KeyManager {
-    public static final NamespacedKey UUID;
-    public static final NamespacedKey DisplayName;
-    public static final NamespacedKey Value;
-    public static final NamespacedKey Locked;
+    private static final NamespacedKey UUID;
+    private static final NamespacedKey DisplayName;
+    private static final NamespacedKey Value;
+    private static final NamespacedKey Locked;
 
     static {
         JavaPlugin plugin = HNItem.getInstance();
@@ -16,6 +16,10 @@ public class KeyManager {
         DisplayName = new NamespacedKey(plugin, "DisplayName");
         Value = new NamespacedKey(plugin, "Value");
         Locked = new NamespacedKey(plugin, "Locked");
-
     }
+
+    public static NamespacedKey getUUID() {return UUID;}
+    public static NamespacedKey getDisplayName() {return DisplayName;}
+    public static NamespacedKey getValue() {return Value;}
+    public static NamespacedKey getLocked() {return Locked;}
 }

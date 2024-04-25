@@ -65,8 +65,8 @@ public class MapLockedCommand implements CommandExecutor {
 
         // 檢查 UUID Key
         // 防止 已簽名後 直接綁定
-        if (container.has(KeyManager.UUID)) {
-            ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(KeyManager.UUID, PersistentDataType.STRING)));
+        if (container.has(KeyManager.getUUID())) {
+            ownerName = DataHandle.getPlayerName(UUID.fromString(container.get(KeyManager.getUUID(), PersistentDataType.STRING)));
 
             // 檢查 是否擁有者
             if (!ItemHandle.isOwner(container, player)) {
@@ -80,7 +80,7 @@ public class MapLockedCommand implements CommandExecutor {
             itemMeta.setLore(null);
         }else {
             // 寫入 NBT
-            container.set(KeyManager.UUID, PersistentDataType.STRING, player.getUniqueId().toString());
+            container.set(KeyManager.getUUID(), PersistentDataType.STRING, player.getUniqueId().toString());
         }
 
         // Lore 相關重寫

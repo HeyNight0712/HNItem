@@ -25,13 +25,13 @@ public class BlockPlace implements Listener {
         PersistentDataContainer bannerContainer = banner.getPersistentDataContainer();
         PersistentDataContainer itemContainer = itemData.getPersistentDataContainer();
         // 保存 簽證ID
-        if (itemContainer.has(KeyManager.UUID)) {
-            bannerContainer.set(KeyManager.UUID, PersistentDataType.STRING, itemContainer.get(KeyManager.UUID, PersistentDataType.STRING));
+        if (itemContainer.has(KeyManager.getUUID())) {
+            bannerContainer.set(KeyManager.getUUID(), PersistentDataType.STRING, itemContainer.get(KeyManager.getUUID(), PersistentDataType.STRING));
         }
 
         // 保存 命名物品
         if (itemData.getItemStack().getItemMeta().hasDisplayName()) {
-            bannerContainer.set(KeyManager.DisplayName, PersistentDataType.STRING, itemData.getItemStack().getItemMeta().getDisplayName());
+            bannerContainer.set(KeyManager.getDisplayName(), PersistentDataType.STRING, itemData.getItemStack().getItemMeta().getDisplayName());
         }
 
         // 更新旗幟

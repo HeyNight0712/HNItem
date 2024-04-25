@@ -75,7 +75,7 @@ Commands:
 Item:
   Coin:
     Lore:
-      - "&6價值: &e%value%"
+      - "&6價值: &e%value% $"
       - ""
       - "&8右鍵- 消耗一張"
       - "&8蹲下+右鍵- 消耗手上"

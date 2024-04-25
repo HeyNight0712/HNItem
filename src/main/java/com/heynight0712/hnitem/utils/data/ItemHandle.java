@@ -19,7 +19,7 @@ public class ItemHandle {
      * @return 是則返回 True
      */
     public static boolean isOwner(PersistentDataContainer container, Player player) {
-        String ownerUUID = container.get(KeyManager.UUID, PersistentDataType.STRING);
+        String ownerUUID = container.get(KeyManager.getUUID(), PersistentDataType.STRING);
         String playerUUID = player.getUniqueId().toString();
         return ownerUUID == null || ownerUUID.equals(playerUUID);
     }

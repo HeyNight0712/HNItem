@@ -33,10 +33,10 @@ public class CoinClick implements Listener {
 
         // 檢查 經濟
         PersistentDataContainer container = meta.getPersistentDataContainer();
-        if (!container.has(KeyManager.Value)) return;
+        if (!container.has(KeyManager.getValue())) return;
 
         // 控制數量
-        double value = container.get(KeyManager.Value, PersistentDataType.DOUBLE);
+        double value = container.get(KeyManager.getValue(), PersistentDataType.DOUBLE);
         int amount = 1;
 
         // 檢查 蹲下
